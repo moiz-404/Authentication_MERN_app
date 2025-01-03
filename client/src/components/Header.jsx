@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const Header = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
   return (
     <header className="bg-gradient-to-b from-pink-100 to-white shadow-md">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center p-4 md:p-6">
@@ -44,7 +45,7 @@ const Header = () => {
                   className="h-7 w-7 rounded-full object-cover"
                 />
               ) : (
-                <li>Sign In</li>
+                <li onClick={() => navigate('/signin')}>Sign In</li>
               )}
             </Link>
           </ul>

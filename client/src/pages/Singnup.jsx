@@ -74,7 +74,7 @@ const Signup = () => {
               type="text"
               placeholder="username"
               id="username"
-              className="w-full pl-10 py-2 bg-gray-800 text-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full pl-10 py-2 bg-gray-800 text-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500 required"
               onChange={handleChange}
             />
             <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
@@ -88,7 +88,7 @@ const Signup = () => {
               type="email"
               placeholder="Email"
               id="email"
-              className="w-full pl-10 py-2 bg-gray-800 text-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full pl-10 py-2 bg-gray-800 text-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500 required"
               onChange={handleChange}
             />
             <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
@@ -102,7 +102,7 @@ const Signup = () => {
               type="password"
               placeholder="Password"
               id="password"
-              className="w-full pl-10 py-2 bg-gray-800 text-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full pl-10 py-2 bg-gray-800 text-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500 required"
               onChange={handleChange}
             />
 
