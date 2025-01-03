@@ -4,6 +4,18 @@ import { handleLogout } from '../../controllers/authControllers/logout.Controlle
 
 const router = express.Router();
 
+
+/**
+ * @swagger
+ * /auth/logout:
+ *   post:
+ *     summary: Logout a user
+ *     tags:
+ *       - Authentication
+ *     responses:
+ *       200:
+ *         description: Logout successful
+ */
 // POST /auth/logout - Logout a user
 router.post('/', handleLogout);
 

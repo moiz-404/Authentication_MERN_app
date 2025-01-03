@@ -4,6 +4,8 @@ import googleAuth from '../../controllers/authControllers/googleAuth.controller.
 
 const router = express.Router();
 
+
+
 router.post('/', googleAuth);
 
 export default router;

@@ -20,6 +20,12 @@ import resetPassword from './routes/authRoutes/resetPassword.Route.js';
 import authStatus from './routes/authRoutes/checkAuthStatus.Route.js';
 import googleAuth from './routes/authRoutes/googleAuth.Route.js';
 // import verifyJWT from './middleware/verifyJWT.js';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import swaggerOptions from './config/swagger.js';
+
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
+
 
 
 // Load environment variables
@@ -46,7 +52,7 @@ app.use(cors({
 // Serve static files
 app.use(express.static(path.resolve('public')));
 
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 // Define routes
 app.use('/api/register', registerRoute);
 app.use('/api/login', loginRoute);
@@ -76,6 +82,7 @@ app.all('*', (req, res) => {
 try {
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Swagger Doc Api's running on http://localhost:${PORT}/api-docs`);
   });
 } catch (error) {
   console.error('Database connection failed:', error.message);
