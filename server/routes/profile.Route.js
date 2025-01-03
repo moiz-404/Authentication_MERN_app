@@ -42,7 +42,6 @@ const router = express.Router();
  *         description: Unauthorized
  *       400:
  *         description: Bad request
- *
  *   get:
  *     summary: Get all users
  *     tags: [Users]
@@ -65,6 +64,7 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
+
 router.route('/')
     .post(verifyJWT, profileController.createProfile)
     .get(profileController.getAllProfiles);
