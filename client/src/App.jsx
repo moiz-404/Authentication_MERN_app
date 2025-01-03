@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom'; // Use BrowserRouter and Routes
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 
 import Home from './pages/Home';
 import PageNotFound from './pages/NotFound';
@@ -7,19 +7,24 @@ import Signup from './pages/Singnup';
 import Signin from './pages/Signin';
 import CreateProfile from './pages/createProfile';
 import Profile from './pages/Profile';
+import ResetPassword from './pages/ResetPassword';
 import ResetPasswordOTP from './pages/ResetPasswordOTP';
-import Reset from './pages/ResetPassword';
 import Header from './components/Header';
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
-  return (
-    // Wrap the entire app inside BrowserRouter
-    <BrowserRouter>
-      {/* Header component stays outside of Routes */}
-      <Header />
+  // Get the current location
+  const location = useLocation();
 
-      {/* Use Routes and Route to define your paths */}
+  // Paths where the Header should not be displayed
+  const noHeaderPaths = ['/', '/signup'];
+
+  return (
+    <>
+      {/* Render Header only if the current path is not in noHeaderPaths */}
+      {!noHeaderPaths.includes(location.pathname) && <Header />}
+
+      {/* Define Routes */}
       <Routes>
         <Route path="/" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
@@ -27,15 +32,21 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
-          <Route path="/resetPasswordOTP" element={<ResetPasswordOTP />} />
-          <Route path="/resetPassword" element={<Reset />} />
         </Route>
+        <Route path="/resetPasswordOTP" element={<ResetPasswordOTP />} />
+        <Route path="/resetPassword" element={<ResetPassword />} />
 
         {/* Catch-all for undefined routes */}
         <Route path="*" element={<PageNotFound />} />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
 
-export default App;
+export default function RootApp() {
+  return (
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  );
+}

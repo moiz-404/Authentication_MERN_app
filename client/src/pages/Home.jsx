@@ -5,10 +5,7 @@ import { toast } from 'react-toastify';
 const Home = () => {
     return (
         <div className="h-screen w-full bg-gradient-to-b from-pink-100 to-white flex flex-col items-center justify-center relative">
-            {/* Top Bar */}
             
-
-
             {/* Centered Content */}
             <div className="text-center px-4">
                 {/* Robot Image */}
