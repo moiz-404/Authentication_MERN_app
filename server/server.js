@@ -1,5 +1,4 @@
 // server.js
-// Import necessary modules
 import dotenv from 'dotenv';
 import express from 'express';
 import path from 'path';
@@ -7,6 +6,11 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
 import connectDB from './config/dbconn.js';
+import corsOptions from './config/cors-options.js';
+import { logger } from './middlewares/log-events.middleware.js';
+import errorHandler from './middlewares/error-Handler.middleware.js';
+import credentials from './middlewares/credentials.middleware.js';
+
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import swaggerOptions from './config/swagger.js';
@@ -26,8 +30,6 @@ import googleAuth from './routes/auth/google-0auth.route.js';
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 
-
-
 // Load environment variables
 dotenv.config();
 
@@ -37,18 +39,27 @@ const PORT = process.env.PORT || 3500;
 // Connect to MongoDB
 connectDB();
 
-// Middleware setup
-// Middleware to parse JSON body
-app.use(express.json());
-// Handle cookie
-app.use(cookieParser());
-// Enable CORS for all routes
-app.use(cors({
-  origin: 'http://localhost:3000', // Replace with your frontend URL
-  credentials: true, // Allow cookies
-}));
+// custom middleware logger
+app.use(logger);
 
-// Serve static files
+// Handle options credentials check - before CORS!
+// and fetch cookies credentials requirement
+app.use(credentials);
+
+// Cross Origin Resource Sharing
+app.use(cors(corsOptions));
+
+// built-in middleware to handle urlencoded form data
+app.use(express.urlencoded({ extended: false }));
+
+// built-in middleware for json 
+app.use(express.json());
+
+//middleware for cookies
+app.use(cookieParser());
+
+//serve static files
+// app.use('/', express.static(path.join(__dirname, '/public')));
 app.use(express.static(path.resolve('public')));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
@@ -84,12 +95,4 @@ try {
   process.exit(1); // Graceful exit on database failure
 }
 
-app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500;
-  const message = err.message || 'Internal Server Error';
-  return res.status(statusCode).json({
-    success: false,
-    message,
-    statusCode,
-  });
-});
+app.use(errorHandler);

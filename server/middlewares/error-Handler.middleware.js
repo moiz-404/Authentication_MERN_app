@@ -1,6 +1,9 @@
-export const errorHandler = (statusCode, message) => {
-    const error = new Error();
-    error.statusCode = statusCode;
-    error.message = message;
-    return error;
-  };
+import { logEvents } from './log-events.middleware.js'; // Ensure the correct file path and extension
+
+const errorHandler = (err, req, res, next) => {
+    logEvents(`${err.name}: ${err.message}`, 'errLog.txt');
+    console.error(err.stack);
+    res.status(500).send(err.message);
+};
+
+export default errorHandler;
