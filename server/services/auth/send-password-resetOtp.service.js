@@ -21,15 +21,25 @@ export const sendPasswordResetOtp = async (req, res) => {
         await user.save();
 
         // sending OTP email
-        const mailOptions = {
-            from: process.env.SENDER_EMAIL,
-            to: user.email,
-            subject: 'Password Reset OTP ',
-            text: `Your OTP for resetting your password is ${otp}. Use this OTP to proceed with resetting your password.`,
-        }
+        // const mailOptions = {
+        //     from: process.env.SENDER_EMAIL,
+        //     to: user.email,
+        //     subject: 'Password Reset OTP ',
+        //     text: `Your OTP for resetting your password is ${otp}. Use this OTP to proceed with resetting your password.`,
+        // }
 
-        await transporter.sendMail(mailOptions);
-
+        // const sendMail = async (transporter,mailOptions) => {
+        //     try {
+        //         await transporter.sendMail(mailOptions);
+        //         res.status(201).json({
+        //             success: `Email has been sent successfully!`,
+        //         });
+        //     } catch (error) {
+        //         console.error(err);
+        //         res.status(500).json({ message: 'Internal Server Error' });
+        //     }
+        // }
+        // sendMail(transporter,mailOptions)
         res.json({ success: ture, message: 'OTP sent on Email' });
 
     } catch (error) {

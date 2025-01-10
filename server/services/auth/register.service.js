@@ -51,13 +51,24 @@ export const handleRegister = async (req, res) => {
 
         // sending welcome email
         // const mailOptions = {
-        //     from: process.env.SENDER_EMAIL,
-        //     to: email,
+        //     from: process.env.SENDER_EMAIL, // Sender's email
+        //     to: user.email,// Recipient's email
         //     subject: 'welcome to ',
         //     text: `welcome to our website. Your account has been created with email is:${email} `,
         // }
-        
-        // await transporter.sendMail(mailOptions);
+
+        // const sendMail = async (transporter,mailOptions) => {
+        //     try {
+        //         await transporter.sendMail(mailOptions);
+        //         res.status(201).json({
+        //             success: `Email has been sent successfully!`,
+        //         });
+        //     } catch (error) {
+        //         console.error(err);
+        //         res.status(500).json({ message: 'Internal Server Error' });
+        //     }
+        // }
+        // sendMail(transporter,mailOptions)
 
         // Return success response with username and email
         res.status(201).json({
