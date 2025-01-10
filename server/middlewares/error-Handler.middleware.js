@@ -1,15 +1,13 @@
 // ./middleware/error-handler.middleware.js
-import logger from '../config/logger.js';
-
 const errorHandler = (err, req, res, next) => {
-    // Log the error to errLog.txt file
-    logger.error(`${err.name}: ${err.message} - Stack: ${err.stack}`);
-    
-    // Log to the console for debugging purposes
-    console.error(err.stack); 
-    
-    // Send the error message as the response
-    res.status(500).send('Something went wrong!');
+    const statusCode = err.statusCode || 500;
+    const message = err.message || 'Internal Server Error';
+    return res.status(statusCode).json({
+        success: false,
+        message,
+        statusCode,
+    });
 };
+
 
 export default errorHandler;

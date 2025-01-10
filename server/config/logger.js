@@ -18,7 +18,7 @@ const logger = winston.createLogger({
       level: 'debug',
     }),
     new winston.transports.File({
-      filename: 'logs/reqLog.txt', // Log all events to reqLog.txt
+      filename: 'logs/reqLog.txt',
       level: 'info', 
       format: logFormat,
     }),

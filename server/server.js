@@ -15,7 +15,7 @@ import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import swaggerOptions from './config/swagger.js';
 
-import profile from './routes/profile.route.js';
+import userProfile from './routes/user-profile.route.js';
 import register from './routes/auth/register.route.js';
 import login from './routes/auth/login.route.js';
 import logout from './routes/auth/logout.route.js';
@@ -26,9 +26,10 @@ import resetPassword from './routes/auth/reset-password.route.js';
 import authStatus from './routes/auth/check-auth-status.route.js';
 import googleAuth from './routes/auth/google-0auth.route.js';
 // import verifyJWT from './middleware/verifyJWT.js';
-// import user from './routes/user.route.js';
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
+
+import logger from './config/logger.js';
 
 // Load environment variables
 dotenv.config();
@@ -74,25 +75,26 @@ app.use('/api/resetPassword', resetPassword);
 app.use('/api/authStatus', authStatus);
 app.use('/api/googleAuth', googleAuth);
 
-app.use('/api/profile', profile);
+app.use('/api/user-profile', userProfile);
 // Middleware to verify JWT for protected routes
 // app.use(verifyJWT);
-// app.use('/api/user', user);
 
 // Handle 404 - Not Found
 app.all('*', (req, res) => {
+  logger.warn(`404 Not Found: ${req.method} ${req.url}`);
   res.status(404).json({ error: '404 Not Found' });
 });
 
-// start the server
+// Start the server
 try {
   app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-    console.log(`Swagger Doc Api's running on http://localhost:${PORT}/api-docs`);
+    logger.info(`Server running on http://localhost:${PORT}`);
+    logger.info(`Swagger Docs running on http://localhost:${PORT}/api-docs`);
   });
 } catch (error) {
-  console.error('Database connection failed:', error.message);
-  process.exit(1); // Graceful exit on database failure
+  logger.error('Server startup failed:', error.message);
+  process.exit(1); // Graceful exit on failure
 }
 
+// Global error handler middleware
 app.use(errorHandler);

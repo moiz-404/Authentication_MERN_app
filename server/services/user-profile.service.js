@@ -84,10 +84,10 @@ const deleteUserProfile = async (req, res) => {
     }
 };
 
-const profilesController = {
+const userProfileService = {
     updateUserProfile,
     getUserProfile,
     deleteUserProfile,
 };
 
-export default profilesController;
+export default userProfileService;
