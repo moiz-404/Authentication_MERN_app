@@ -1,3 +1,4 @@
+// ./middleware/credentials.middleware.js
 import allowedOrigins from '../config/allowed-origins.js';
 
 const credentials = (req, res, next) => {

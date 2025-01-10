@@ -1,4 +1,4 @@
-// ./middleware/userAuth.Middleware.js
+// ./middleware/verify-JWT.middleware.js
 import jwt from 'jsonwebtoken';
 export const verifyJWT = async (req, res, next) => {
     try {

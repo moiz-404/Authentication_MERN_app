@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 
 import connectDB from './config/dbconn.js';
 import corsOptions from './config/cors-options.js';
-import { logger } from './middlewares/log-events.middleware.js';
+import logEvents from './middlewares/log-events.middleware.js';
 import errorHandler from './middlewares/error-Handler.middleware.js';
 import credentials from './middlewares/credentials.middleware.js';
 
@@ -40,7 +40,7 @@ const PORT = process.env.PORT || 3500;
 connectDB();
 
 // custom middleware logger
-app.use(logger);
+app.use(logEvents);
 
 // Handle options credentials check - before CORS!
 // and fetch cookies credentials requirement
