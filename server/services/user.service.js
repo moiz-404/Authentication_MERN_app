@@ -1,5 +1,5 @@
 // user.controller.js
-import UserModel from '../models/User.Model.js';
+import UserModel from '../models/user.model.js';
 
 // Get all users
 const getAllUsers = async (req, res) => {

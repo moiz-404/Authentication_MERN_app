@@ -1,6 +1,6 @@
 // controllers/authController/sendPasswordResetOtp.Controller.js
-import UserModels from '../../models/User.Model.js';
-import transporter from '../../config/nodemmailer.js';
+import UserModels from '../../models/user.model.js';
+import transporter from '../../config/node-mailer.js';
 
 export const sendPasswordResetOtp = async (req, res) => {
     try {

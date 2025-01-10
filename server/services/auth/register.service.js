@@ -1,8 +1,8 @@
 // controllers/authController/register.Controller.js
-import UserModels from '../../models/User.Model.js';
+import UserModels from '../../models/user.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import transporter from '../../config/nodemmailer.js';
+import transporter from '../../config/node-mailer.js';
 
 // Handler for registering a new user
 export const handleRegister = async (req, res) => {

@@ -1,6 +1,6 @@
 // controllers/authController/login.Controller.js
 
-import UserModels from '../../models/User.Model.js';
+import UserModels from '../../models/user.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 

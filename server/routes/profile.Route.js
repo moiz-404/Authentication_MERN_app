@@ -1,7 +1,7 @@
 // user.Route.js
 import express from 'express';
-import profileController from '../controllers/profile.Controller.js';
-import { verifyJWT } from '../middlewares/verifyJWT.Middleware.js';
+import profileController from '../services/profile.service.js';
+import { verifyJWT } from '../middlewares/verify-JWT.middleware.js';
 
 const router = express.Router();
 

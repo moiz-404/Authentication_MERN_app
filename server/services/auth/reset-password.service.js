@@ -1,5 +1,5 @@
 // controllers/authController/resetPassword.Controller.js
-import UserModels from '../../models/User.Model.js';
+import UserModels from '../../models/user.model.js';
 import bcrypt from 'bcryptjs';
 
  

@@ -1,7 +1,7 @@
 // routes/authRoute/sendVerifyOtp.Route.js
 import express from 'express';
-import { sendVerifyOtp } from '../../controllers/authControllers/sendVerifyOtp.Controller.js';
-import { verifyJWT } from '../../middlewares/verifyJWT.Middleware.js'
+import { sendVerifyOtp } from '../../services/auth/send-verifyOtp.service.js';
+import { verifyJWT } from '../../middlewares/verify-JWT.middleware.js'
 
 
 const router = express.Router();

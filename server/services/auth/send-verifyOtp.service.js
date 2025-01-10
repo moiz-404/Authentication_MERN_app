@@ -1,6 +1,6 @@
 // controllers/authController/sendVerifyOtp.Controller.js
 import UserModels from '../../models/User.Model.js';
-import transporter from '../../config/nodemmailer.js';
+import transporter from '../../config/node-mailer.js';
 
 export const sendVerifyOtp = async (req, res) => {
     try {

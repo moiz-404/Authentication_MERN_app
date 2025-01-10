@@ -8,17 +8,17 @@ import cookieParser from 'cookie-parser';
 
 import connectDB from './config/dbconn.js';
 
-import userRoutes from './routes/user.Route.js';
-import profileRoutes from './routes/profile.Route.js';
-import registerRoute from './routes/authRoutes/register.Route.js';
-import loginRoute from './routes/authRoutes/login.Route.js';
-import logoutRoute from './routes/authRoutes/logot.Route.js';
-import sendVerifyOtp from './routes/authRoutes/sendVerifyOtp.Route.js';
-import verifyAccount from './routes/authRoutes/verifyAccount.Route.js';
-import sendPasswordResetOtp from './routes/authRoutes/sendPasswordResetOtp.Route.js';
-import resetPassword from './routes/authRoutes/resetPassword.Route.js';
-import authStatus from './routes/authRoutes/checkAuthStatus.Route.js';
-import googleAuth from './routes/authRoutes/googleAuth.Route.js';
+import user from './routes/user.route.js';
+import profile from './routes/profile.route.js';
+import register from './routes/auth/register.route.js';
+import login from './routes/auth/login.route.js';
+import logout from './routes/auth/logout.route.js';
+import sendVerifyOtp from './routes/auth/send-verifyOtp.route.js';
+import verifyAccount from './routes/auth/verify-account.route.js';
+import sendPasswordResetOtp from './routes/auth/send-password-resetOtp.route.js';
+import resetPassword from './routes/auth/reset-password.route.js';
+import authStatus from './routes/auth/check-auth-status.route.js';
+import googleAuth from './routes/auth/google-0auth.route.js';
 // import verifyJWT from './middleware/verifyJWT.js';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
@@ -54,9 +54,9 @@ app.use(express.static(path.resolve('public')));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 // Define routes
-app.use('/api/register', registerRoute);
-app.use('/api/login', loginRoute);
-app.use('/api/logout', logoutRoute);
+app.use('/api/register', register);
+app.use('/api/login', login);
+app.use('/api/logout', logout);
 app.use('/api/VerifyOtp', sendVerifyOtp);
 app.use('/api/verifyAccount', verifyAccount);
 app.use('/api/sendPasswordResetOtp', sendPasswordResetOtp);
@@ -67,8 +67,8 @@ app.use('/api/googleAuth', googleAuth);
 // Middleware to verify JWT for protected routes
 // app.use(verifyJWT);
 
-app.use('/api/user', userRoutes);
-app.use('/api/profile', profileRoutes);
+app.use('/api/user', user);
+app.use('/api/profile', profile);
 
 // Handle 404 - Not Found
 app.all('*', (req, res) => {

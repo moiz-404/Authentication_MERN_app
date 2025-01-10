@@ -1,14 +1,15 @@
-// routes/authRoutes/login.Routes.js
+// routes/authRoute/resetPassword.Route.js
 import express from 'express';
-import { handleLogin } from '../../controllers/authControllers/login.Controller.js';
+import { resetPassword } from '../../services/auth/reset-password.service.js';
+
 
 const router = express.Router();
 
 /**
  * @swagger
- * /auth/login:
+ * /auth/reset-password:
  *   post:
- *     summary: Login an existing user
+ *     summary: Reset the user's password
  *     tags:
  *       - Authentication
  *     requestBody:
@@ -20,15 +21,16 @@ const router = express.Router();
  *             properties:
  *               email:
  *                 type: string
- *               password:
+ *               newPassword:
+ *                 type: string
+ *               resetToken:
  *                 type: string
  *     responses:
  *       200:
- *         description: Login successful
- *       401:
- *         description: Unauthorized, invalid credentials
+ *         description: Password reset successfully
+ *       400:
+ *         description: Invalid token or request data
  */
-// POST /auth/login - Login an existing user
-router.post('/', handleLogin);
+router.post('/', resetPassword);
 
 export default router;

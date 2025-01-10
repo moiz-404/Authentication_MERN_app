@@ -1,7 +1,7 @@
 // routes/authRoute/verifyAccount.Route.js
 import express from 'express';
-import { verifyEmail } from '../../controllers/authControllers/verifyEmail.Controller.js';
-import { verifyJWT } from '../../middlewares/verifyJWT.Middleware.js'
+import { verifyEmail } from '../../services/auth/verify-email.service.js';
+import { verifyJWT } from '../../middlewares/verify-JWT.middleware.js'
 
 
 const router = express.Router();

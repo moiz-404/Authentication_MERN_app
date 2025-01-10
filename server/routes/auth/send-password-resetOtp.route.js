@@ -1,6 +1,6 @@
 // routes/authRoute/sendPasswordResetOtp.Route.js
 import express from 'express';
-import { sendPasswordResetOtp } from '../../controllers/authControllers/sendPasswordResetOtp.Controller.js';
+import { sendPasswordResetOtp } from '../../services/auth/send-password-resetOtp.service.js';
 
 
 const router = express.Router();

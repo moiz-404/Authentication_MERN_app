@@ -1,5 +1,5 @@
 import express from 'express';
-import { checkAuthStatus } from '../../controllers/authControllers/checkAuthStatus.Controller.js';
+import { checkAuthStatus } from '../../services/auth/check-auth-status.service.js';
 
 const router = express.Router();
 
