@@ -1,5 +1,5 @@
 // controllers/authController/verifyEmail.Controller.js
-import UserModels from '../../models/User.Model.js';
+import UserModels from '../../models/user.model.js';
 
 export const verifyEmail = async (req, res) => {
     const { userId, otp } = req.body;

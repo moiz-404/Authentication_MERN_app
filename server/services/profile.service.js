@@ -1,5 +1,5 @@
 // user.controller.js
-import profileModel from '../models/profile.Model.js';
+import profileModel from '../models/profile.model.js';
 import mongoose from 'mongoose';
 
 // Get all profiles

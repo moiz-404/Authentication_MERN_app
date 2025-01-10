@@ -1,7 +1,7 @@
 // googleAuth.controller.js
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs'; 
-import UserModels from '../../models/User.Model.js';
+import UserModels from '../../models/user.model.js';
 
 const googleAuth = async (req, res, next) => {
   try {

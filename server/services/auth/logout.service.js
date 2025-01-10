@@ -1,5 +1,5 @@
 // controllers/auth/logout.Controller.js
-import UserModels from '../../models/User.Model.js';
+import UserModels from '../../models/user.model.js';
 
 // Handler for logging out a user
 export const handleLogout = async (req, res) => {
