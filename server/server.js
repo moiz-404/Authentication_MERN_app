@@ -7,8 +7,10 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
 import connectDB from './config/dbconn.js';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import swaggerOptions from './config/swagger.js';
 
-import user from './routes/user.route.js';
 import profile from './routes/profile.route.js';
 import register from './routes/auth/register.route.js';
 import login from './routes/auth/login.route.js';
@@ -20,9 +22,7 @@ import resetPassword from './routes/auth/reset-password.route.js';
 import authStatus from './routes/auth/check-auth-status.route.js';
 import googleAuth from './routes/auth/google-0auth.route.js';
 // import verifyJWT from './middleware/verifyJWT.js';
-import swaggerJsdoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
-import swaggerOptions from './config/swagger.js';
+// import user from './routes/user.route.js';
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 
@@ -38,7 +38,6 @@ const PORT = process.env.PORT || 3500;
 connectDB();
 
 // Middleware setup
-
 // Middleware to parse JSON body
 app.use(express.json());
 // Handle cookie
@@ -64,19 +63,15 @@ app.use('/api/resetPassword', resetPassword);
 app.use('/api/authStatus', authStatus);
 app.use('/api/googleAuth', googleAuth);
 
+app.use('/api/profile', profile);
 // Middleware to verify JWT for protected routes
 // app.use(verifyJWT);
-
-app.use('/api/user', user);
-app.use('/api/profile', profile);
+// app.use('/api/user', user);
 
 // Handle 404 - Not Found
 app.all('*', (req, res) => {
   res.status(404).json({ error: '404 Not Found' });
 });
-
-
-
 
 // start the server
 try {
@@ -88,9 +83,6 @@ try {
   console.error('Database connection failed:', error.message);
   process.exit(1); // Graceful exit on database failure
 }
-
-
-
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

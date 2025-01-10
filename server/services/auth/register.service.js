@@ -1,4 +1,4 @@
-// controllers/authController/register.Controller.js
+// services/auths/register.service.js
 import UserModels from '../../models/user.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -22,12 +22,17 @@ export const handleRegister = async (req, res) => {
 
         // Encrypt the password
         const hashedPassword = await bcrypt.hashSync(password, 10);
+        
+         // Create a new profile (empty initially)
+         const newProfile = new Profile({});
+         await newProfile.save();
 
         // Create and store the new user
         const newUser = await UserModels.create({
             username,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            profile: newProfile._id  // Associating profile with user
         });
 
         // Create JWTs

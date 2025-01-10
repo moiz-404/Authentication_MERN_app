@@ -16,9 +16,12 @@ export const verifyJWT = async (req, res, next) => {
             (err, decodedToken) => {
                 if (err) return res.sendStatus(403); //invalid token
                 req.user = { id: decodedToken.id };
+                // Fetch user from the database if needed
+                // const user = await User.findById(req.user.id);
+                // req.user.role = user.role; // Assuming 'role' is stored in the User model
                 next();
             })
- 
+
     } catch (error) {
         if (error.name === 'TokenExpiredError') {
             return res.status(401).json({ message: 'Unauthorized, token expired. Please login again.' });

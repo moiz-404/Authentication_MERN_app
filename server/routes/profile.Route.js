@@ -1,6 +1,6 @@
-// user.Route.js
+// userprofile.route.js
 import express from 'express';
-import profileController from '../services/profile.service.js';
+import profileService from '../services/profile.service.js';
 import { verifyJWT } from '../middlewares/verify-JWT.middleware.js';
 
 const router = express.Router();
@@ -8,142 +8,108 @@ const router = express.Router();
 /**
  * @swagger
  * tags:
- *   name: Profiles
+ *   name: userProfiles
  *   description: API for managing user profiles
  */
+
 /**
  * @swagger
- * /profiles:
- *   post:
- *     summary: Create a new user profile
- *     tags: [Profiles]
+ * components:
+ *   securitySchemes:
+ *     BearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ */
+
+/**
+ * @swagger
+ * /profile:
+ *   put:
+ *     summary: Update user profile
+ *     description: Update the details of a user's profile. Requires authentication.
+ *     tags: [userProfiles]
  *     security:
  *       - BearerAuth: []
  *     requestBody:
- *       required: true
+ *       description: The updated profile information
  *       content:
  *         application/json:
  *           schema:
  *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               email:
- *                 type: string
- *               age:
- *                 type: integer
  *             required:
  *               - name
  *               - email
- *     responses:
- *       201:
- *         description: Profile created successfully
- *       401:
- *         description: Unauthorized
- *       400:
- *         description: Bad request
- *   get:
- *     summary: Get all users
- *     tags: [Users]
- *     responses:
- *       200:
- *         description: A list of users
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                   name:
- *                     type: string
- *                   email:
- *                     type: string
- *       500:
- *         description: Internal server error
- */
-
-router.route('/')
-    .post(verifyJWT, profileController.createProfile)
-    .get(profileController.getAllProfiles);
-
-/**
- * @swagger
- * /{id}:
- *   put:
- *     summary: Update a user profile
- *     tags: [Profiles]
- *     security:
- *       - BearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
  *             properties:
  *               name:
  *                 type: string
  *               email:
  *                 type: string
- *               age:
- *                 type: integer
+ *               bio:
+ *                 type: string
  *     responses:
  *       200:
- *         description: Profile updated successfully
+ *         description: User profile updated successfully
+ *       400:
+ *         description: Invalid input
  *       401:
- *         description: Unauthorized
- *       404:
- *         description: Profile not found
- *   get:
- *     summary: Get a user profile by ID
- *     tags: [Profiles]
- *     security:
- *       - BearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: User profile found
- *       401:
- *         description: Unauthorized
- *       404:
- *         description: Profile not found
- *   delete:
- *     summary: Delete a user profile
- *     tags: [Profiles]
- *     security:
- *       - BearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Profile deleted successfully
- *       401:
- *         description: Unauthorized
- *       404:
- *         description: Profile not found
+ *         description: Unauthorized, invalid token
+ *       500:
+ *         description: Server error
  */
-router.route('/:id')
-    .put(verifyJWT, profileController.updateProfile)
-    .get(verifyJWT, profileController.getProfile)
-    .delete(verifyJWT, profileController.deleteProfile);
 
-// Export router as default
+/**
+ * @swagger
+ * /profile:
+ *   get:
+ *     summary: Get user profile
+ *     description: Fetch the details of the authenticated user's profile.
+ *     tags: [userProfiles]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved user profile
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 name:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *                 bio:
+ *                   type: string
+ *       401:
+ *         description: Unauthorized, invalid token
+ *       404:
+ *         description: User profile not found
+ *       500:
+ *         description: Server error
+ */
+
+/**
+ * @swagger
+ * /profile:
+ *   delete:
+ *     summary: Delete user profile
+ *     description: Delete the authenticated user's profile. Requires authentication.
+ *     tags: [userProfiles]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User profile deleted successfully
+ *       401:
+ *         description: Unauthorized, invalid token
+ *       500:
+ *         description: Server error
+ */
+
+router.route('/')
+    .put(verifyJWT, profileService.updateUserProfile)
+    .get(verifyJWT, profileService.getUserProfile)  
+    .delete(verifyJWT, profileService.deleteUserProfile);
+
 export default router;

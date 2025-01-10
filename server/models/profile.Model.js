@@ -14,7 +14,6 @@ const profileSchema = new Schema({
         zipCode: { type: String }
     },
     bio: { type: String },
-    avatar: { type: String },  // URL to the avatar image
     profilePicture: {
         type: String,
         default: 'https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg',

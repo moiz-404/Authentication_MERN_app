@@ -1,4 +1,4 @@
-// user.controller.js
+// user.service.js
 import UserModel from '../models/user.model.js';
 
 // Get all users
@@ -42,6 +42,12 @@ const updateUser = async (req, res, next) => {
         // Update fields only if provided in the request body
         if (req.body?.username) user.username = req.body.username;
         if (req.body?.email) user.email = req.body.email;
+        if (req.body?.password) {
+            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+            user.password = hashedPassword;
+        }
+        if (req.body?.isActive !== undefined) user.isActive = req.body.isActive;
+        if (req.body?.isVerified !== undefined) user.isVerified = req.body.isVerified;
 
         // Save the updated user to the database
         const updatedUser = await user.save();

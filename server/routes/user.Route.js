@@ -1,4 +1,4 @@
-// user.Route.js
+// user.route.js
 import express from 'express';
 import usersController from '../services/user.service.js';
 import { verifyJWT } from '../middlewares/verify-JWT.middleware.js';

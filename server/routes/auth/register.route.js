@@ -1,4 +1,4 @@
-// routes/authRoute/register.Route.js
+// routes/auth/register.route.js
 import express from 'express';
 import { handleRegister } from '../../services/auth/register.service.js';
 
