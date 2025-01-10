@@ -4,7 +4,6 @@ import { handleLogout } from '../../services/auth/logout.service.js';
 
 const router = express.Router();
 
-
 /**
  * @swagger
  * /auth/logout:

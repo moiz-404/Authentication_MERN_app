@@ -2,7 +2,6 @@
 import express from 'express';
 import { resetPassword } from '../../services/auth/reset-password.service.js';
 
-
 const router = express.Router();
 
 /**

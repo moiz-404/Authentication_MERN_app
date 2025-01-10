@@ -4,8 +4,6 @@ import googleAuth from '../../services/auth/google-auth.service.js';  // Named i
 
 const router = express.Router();
 
-
-
 router.post('/', googleAuth);
 
 export default router;

@@ -5,7 +5,6 @@ import { sendPasswordResetOtp } from '../../services/auth/send-password-resetOtp
 
 const router = express.Router();
 
-
 /**
  * @swagger
  * /auth/send-password-reset-otp:
