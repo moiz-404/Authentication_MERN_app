@@ -16,7 +16,6 @@ const getAllUsers = async (req, res) => {
 };
 
 // Update user by ID
-
 const updateUser = async (req, res, next) => {
     try {
         const userId = req?.params?.id;
@@ -84,8 +83,6 @@ const deleteUser = async (req, res) => {
     }
 };
 
-
-
 // Get user by ID
 const getUser = async (req, res) => {
     try {
@@ -94,13 +91,10 @@ const getUser = async (req, res) => {
         if (!id) {
             return res.status(400).json({ message: 'User ID is required.' });
         }
-
-
         const user = await UserModel.findById(id).exec();
         if (!user) {
             return res.status(404).json({ message: `User with ID ${id} not found` });
         }
-
         res.status(200).json(user);
     } catch (err) {
         console.error('Error retrieving user:', err.message);
