@@ -3,6 +3,7 @@
 import UserModels from '../../models/user.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import logger from '../../config/logger.js'; // Import the logger
 
 // Handler for login a new user
 export const handleLogin = async (req, res, next) => {
@@ -45,13 +46,16 @@ export const handleLogin = async (req, res, next) => {
             expires: new Date(Date.now() + 2 * 60 * 60 * 1000), // 2 hours
         });
 
+        // Log successful login
+        logger.info(`User with email ${email} logged in successfully`); // Log success
+
         // Respond with the access token and user info in the response body
         res.status(200).json({
             message: 'Logged in successfully',
             foundUser,
         });
     } catch (error) {
-        console.error('Error during login:', error);
+        logger.error('Error during login: ' + error.message); // Log error if something goes wrong
         res.status(500).json({ 'message': 'Internal server error' });
         next(error);
     }

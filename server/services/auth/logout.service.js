@@ -1,5 +1,6 @@
 // controllers/auth/logout.Controller.js
 import UserModels from '../../models/user.model.js';
+import logger from '../../config/logger.js'; // Import the logger
 
 // Handler for logging out a user
 export const handleLogout = async (req, res) => {
@@ -31,10 +32,13 @@ export const handleLogout = async (req, res) => {
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : '',
         });
 
+        // Log successful logout
+        logger.info(`User with ID ${foundUser._id} logged out successfully`); 
+
         // Respond with a success message
         return res.status(200).json({ message: 'Logged out successfully!' });
     } catch (error) {
-        console.error('Logout error:', error);
+        logger.error(`Error during logout: ${error.message}`); 
         return res.status(500).json({ error: 'An error occurred during logout' });
     }
 };

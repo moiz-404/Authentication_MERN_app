@@ -3,6 +3,7 @@ import UserModels from '../../models/user.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import transporter from '../../config/node-mailer.js';
+import logger from '../../config/logger.js'; // Import the logger
 
 // Handler for registering a new user
 export const handleRegister = async (req, res) => {
@@ -23,9 +24,9 @@ export const handleRegister = async (req, res) => {
         // Encrypt the password
         const hashedPassword = await bcrypt.hashSync(password, 10);
         
-         // Create a new profile (empty initially)
-         const newProfile = new Profile({});
-         await newProfile.save();
+        // Create a new profile (empty initially)
+        const newProfile = new Profile({}); 
+        await newProfile.save();
 
         // Create and store the new user
         const newUser = await UserModels.create({
@@ -54,7 +55,10 @@ export const handleRegister = async (req, res) => {
             expires: new Date(Date.now() + 2 * 60 * 60 * 1000), // 2 hours
         });
 
-        // sending welcome email
+        // Log successful user creation
+        logger.info(`New user ${newUser.username} created successfully with email ${email}`); 
+
+        // sending welcome email (optional)
         // const mailOptions = {
         //     from: process.env.SENDER_EMAIL, // Sender's email
         //     to: user.email,// Recipient's email
@@ -81,7 +85,7 @@ export const handleRegister = async (req, res) => {
             newUser
         });
     } catch (err) {
-        console.error(err);
+        logger.error(`Error during user registration: ${err.message}`); 
         res.status(500).json({ message: 'Internal Server Error' });
     }
 };

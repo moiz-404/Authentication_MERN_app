@@ -1,6 +1,7 @@
 // userprofile.service.js
 import ProfileModel from '../models/profile.model.js';
 import UserModel from '../models/user.model.js';
+import logger from '../config/logger.js'; // Import the logger
 
 // Update user profile
 const updateUserProfile = async (req, res) => {
@@ -36,10 +37,12 @@ const updateUserProfile = async (req, res) => {
         // Save updated profile
         await profile.save();
 
+        logger.info(`Profile successfully updated for user ID ${userId}`); // Log success
+
         // Return success response with updated profile
         res.status(200).json({ message: 'Profile updated successfully', profile });
     } catch (err) {
-        console.error(err);
+        logger.error(`Error updating profile for user ID ${userId}: ${err.message}`); // Log error
         return res.status(500).json({ message: 'Error updating profile', error: err.message });
     }
 };
@@ -48,19 +51,23 @@ const updateUserProfile = async (req, res) => {
 const getUserProfile = async (req, res) => {
     const { userId } = req.user;  // Extract user ID from the authenticated user (assuming JWT authentication)
     if (!userId) {
-        return res.status(400).json({ message: 'Profile ID is required.' });  // Ensure the user ID is provided
+        return res.status(400).json({ message: 'Profile ID is required.' });
     }
+    
     try {
         // Find the user by ID and populate the profile field
         const user = await UserModel.findById(userId).populate('profile');
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });  // Return an error if the user is not found
+            return res.status(404).json({ message: 'User not found' });
         }
+
+        // Log success if user profile is retrieved
+        logger.info(`User profile successfully retrieved for user ID ${userId}`);
 
         // Return the user's profile if found
         return res.status(200).json({ profile: user.profile });
     } catch (err) {
-        console.error('Error retrieving profile:', err.message);  // Log the error for debugging
+        logger.error(`Error retrieving profile for user ID ${userId}: ${err.message}`); // Log error
         res.status(500).json({ message: 'Error retrieving profile', error: err.message });
     }
 };
@@ -72,14 +79,17 @@ const deleteUserProfile = async (req, res) => {
         // Find the user by ID and populate the profile field
         const user = await UserModel.findById(userId).populate('profile');
         if (!user) {
-            return res.status(404).json({ message: `User with ID ${userId} not found` });  // Return error if the user is not found
+            return res.status(404).json({ message: `User with ID ${userId} not found` });
         }
 
         // Delete the user by ID, which also deletes the profile if it's embedded in the user document
         const result = await UserModel.findByIdAndDelete(userId);
-        return res.status(200).json({ message: `Profile with ID ${userId} deleted successfully`, result });  // Confirm deletion
+
+        logger.info(`Profile with ID ${userId} deleted successfully`); // Log success
+
+        return res.status(200).json({ message: `Profile with ID ${userId} deleted successfully`, result });
     } catch (err) {
-        console.error('Error deleting profile:', err.message);  // Log the error for debugging
+        logger.error(`Error deleting profile for user ID ${userId}: ${err.message}`); // Log error
         res.status(500).json({ message: 'Error deleting profile', error: err.message });
     }
 };
