@@ -1,3 +1,4 @@
+// ./service/auth/check-auth-status.service.js
 import jwt from 'jsonwebtoken';
 
 export const checkAuthStatus = (req, res, next) => {

@@ -1,3 +1,4 @@
+// ./routes/auth/check-auth-status.route.js
 import express from 'express';
 import { checkAuthStatus } from '../../services/auth/check-auth-status.service.js';
 
