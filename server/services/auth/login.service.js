@@ -56,7 +56,7 @@ export const handleLogin = async (req, res, next) => {
         });
     } catch (error) {
         logger.error('Error during login: ' + error.message); // Log error if something goes wrong
-        res.status(500).json({ 'message': 'Internal server error' });
+        res.status(500).json({ message: 'Internal server error' });
         next(error);
     }
 };

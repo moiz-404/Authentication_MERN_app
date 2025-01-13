@@ -9,18 +9,18 @@ const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'API Documentation',
+      title: 'Authentication API Documentation',
       version: '1.0.0',
-      description: 'API documentation for the server application',
+      description: 'API to handle authentication, including login and token refresh.',
     },
     components: {
-        securitySchemes: {
-            BearerAuth: {
-                type: 'http',
-                scheme: 'bearer',
-                bearerFormat: 'JWT',
-            },
+      securitySchemes: {
+        cookieAuth: {
+          type: 'apiKey',
+          in: 'cookie',
+          name: 'jwt',
         },
+      },
     },
     servers: [
       {
