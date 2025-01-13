@@ -38,7 +38,7 @@ export const handleRegister = async (req, res) => {
 
         // Create JWTs
         const token = jwt.sign(
-            { "id": newUser._id },
+            { "userId": newUser._id },
             process.env.JWT_SECRET,
             { expiresIn: '1d' }
         );

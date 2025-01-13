@@ -10,6 +10,7 @@ import corsOptions from './config/cors-options.js';
 import logEvents from './middlewares/log-events.middleware.js';
 import errorHandler from './middlewares/error-Handler.middleware.js';
 import credentials from './middlewares/credentials.middleware.js';
+import logger from './config/logger.js';
 
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
@@ -27,15 +28,14 @@ import authStatus from './routes/auth/check-auth-status.route.js';
 import googleAuth from './routes/auth/google-0auth.route.js';
 // import verifyJWT from './middleware/verifyJWT.js';
 
-const swaggerDocs = swaggerJsdoc(swaggerOptions);
-
-import logger from './config/logger.js';
-
 // Load environment variables
 dotenv.config();
 
 const app = express();
+
 const PORT = process.env.PORT || 3500;
+
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
 
 // Connect to MongoDB
 connectDB();

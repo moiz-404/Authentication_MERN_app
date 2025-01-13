@@ -2,7 +2,7 @@
 import jwt from 'jsonwebtoken';
 export const verifyJWT = async (req, res, next) => {
     try {
-        const authHeader = req.headers.authorization || req.headers.Authorization;
+        const authHeader = req.headers.authorization || req.headers.Authorization || req.cookies.token;
         if (!authHeader?.startsWith('Bearer ')) return res.sendStatus(401);
         const token = authHeader.split(' ')[1];
         if (!token) {
@@ -10,18 +10,13 @@ export const verifyJWT = async (req, res, next) => {
         }
 
         // Verify the token
-        jwt.verify(
-            token,
-            process.env.JWT_SECRET,
-            (err, decodedToken) => {
-                if (err) return res.sendStatus(403); //invalid token
-                req.user = { id: decodedToken.id };
-                // Fetch user from the database if needed
-                // const user = await User.findById(req.user.id);
-                // req.user.role = user.role; // Assuming 'role' is stored in the User model
-                next();
-            })
-
+        const decodedToken = await jwt.verify(token, process.env.JWT_SECRET,)
+        if (!decodedToken) return res.Status(403).json({ message: "invalid token" }); 
+        req.id = decodedToken.userId;
+        // Fetch user from the database if needed
+        // const user = await User.findById(req.user.id);
+        // req.user.role = user.role; // Assuming 'role' is stored in the User model
+        next();
     } catch (error) {
         if (error.name === 'TokenExpiredError') {
             return res.status(401).json({ message: 'Unauthorized, token expired. Please login again.' });

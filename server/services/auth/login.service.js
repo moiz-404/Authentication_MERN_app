@@ -29,7 +29,7 @@ export const handleLogin = async (req, res, next) => {
 
         // Create JWTs
         const token = jwt.sign(
-            { "id": foundUser._id },
+            { "userId": foundUser._id },
             process.env.JWT_SECRET,
             { expiresIn: '1d' }
         );
