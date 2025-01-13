@@ -1,7 +1,7 @@
 // userprofile.route.js
 import express from 'express';
 import userProfileService from '../services/user-profile.service.js';
-import { verifyJWT } from '../middlewares/verify-JWT.middleware.js';
+import verifyJWT from '../middlewares/verify-JWT.middleware.js';
 
 const router = express.Router();
 

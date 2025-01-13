@@ -1,6 +1,6 @@
 // routes/authRoutes/logout.Routes.js
 import express from 'express';
-import { handleRefreshToken } from '../../services/auth/refresh-token.service.js';
+import handleRefreshToken from '../../services/auth/refresh-token.service.js';
 
 const router = express.Router();
 

@@ -16,7 +16,7 @@ const userSchema = new Schema({
     verfyOtpExpiresAt: { type: Number, default: 0 },  // Expiration time of the OTP
     PasswordResetOtp: { type: String, default: '' },  // OTP code for verification
     PasswordResetOtpExpiresAt: { type: Number, default: 0 },  // Expiration time of the OTP
-    token: String,
+    refreshToken:  { type: String },
 }, { timestamps: true });
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);

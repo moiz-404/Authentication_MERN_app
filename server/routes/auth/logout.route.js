@@ -1,6 +1,6 @@
 // routes/authRoutes/logout.Routes.js
 import express from 'express';
-import { handleLogout } from '../../services/auth/logout.service.js';
+import handleLogout from '../../services/auth/logout.service.js';
 
 const router = express.Router();
 

@@ -1,9 +1,9 @@
-// controllers/authController/resetPassword.Controller.js
+// services/auth/resetPassword.service.js
 import UserModels from '../../models/user.model.js';
 import bcrypt from 'bcryptjs';
 
  
-export const resetPassword = async (req, res) => {
+const resetPassword = async (req, res) => {
     const { email, otp, password } = req.body;
 
     // Validate input
@@ -43,3 +43,4 @@ export const resetPassword = async (req, res) => {
         return res.status(500).json({ success: false, message: 'Internal server error.' });
     }
 };
+export default resetPassword;

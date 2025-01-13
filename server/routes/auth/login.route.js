@@ -1,6 +1,6 @@
 // routes/authRoutes/login.Routes.js
 import express from 'express';
-import { handleLogin } from '../../services/auth/login.service.js';
+import handleLogin from '../../services/auth/login.service.js';
 
 const router = express.Router();
 

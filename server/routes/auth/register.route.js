@@ -1,6 +1,6 @@
 // routes/auth/register.route.js
 import express from 'express';
-import { handleRegister } from '../../services/auth/register.service.js';
+import handleRegister from '../../services/auth/register.service.js';
 
 const router = express.Router();
 

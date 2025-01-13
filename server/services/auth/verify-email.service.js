@@ -1,7 +1,7 @@
-// controllers/authController/verifyEmail.Controller.js
+// services/auth/verifyEmail.service.js
 import UserModels from '../../models/user.model.js';
 
-export const verifyEmail = async (req, res) => {
+const verifyEmail = async (req, res) => {
     const { userId, otp } = req.body;
 
     // Validate input
@@ -39,3 +39,4 @@ export const verifyEmail = async (req, res) => {
         return res.status(500).json({ success: false, message: 'Internal server error.' });
     }
 };
+export default verifyEmail;

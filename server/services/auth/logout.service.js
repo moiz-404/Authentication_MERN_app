@@ -1,45 +1,34 @@
-// controllers/auth/logout.Controller.js
+// services/auth/logout.service.js
 import UserModels from '../../models/user.model.js';
-import logger from '../../config/logger.js'; // Import the logger
+import logger from '../../config/logger.js';
 
-// Handler for logging out a user
-export const handleLogout = async (req, res) => {
+const handleLogout = async (req, res) => {
     try {
-        const { cookies } = req;
-        const token = cookies?.jwt_accessToken;
-
-        // If no token is found, respond with a message
-        if (!token) {
+        const refreshToken = req.cookies?.jwt_Token;
+        if (!refreshToken) {
             return res.status(200).json({ message: 'No token found. Already logged out.' });
         }
 
-        // Check if the user associated with the token exists in the database
-        const foundUser = await UserModels.findOne({ token }).exec();
-
-        // If no user is found, respond with a message
+        const foundUser = await UserModels.findOne({ refreshToken });
         if (!foundUser) {
             return res.status(200).json({ message: 'No user found. Already logged out.' });
         }
 
-        // Clear the token in the database
-        foundUser.token = '';
+        foundUser.refreshToken = ''; // Clear refresh token
         await foundUser.save();
 
-        // Clear access token from the client
-        res.clearCookie('jwt_accessToken', {
+        res.clearCookie('jwt_Token', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : '',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'Lax',
             maxAge: 0,
         });
 
-        // Log successful logout
-        logger.info(`User with ID ${foundUser._id} logged out successfully`); 
-
-        // Respond with a success message
-        return res.status(200).json({ message: 'Logged out successfully!' });
+        logger.info(`User with username: ${foundUser.username} logged out successfully`);
+        res.status(200).json({ message: 'Logged out successfully!' });
     } catch (error) {
-        logger.error(`Error during logout: ${error.message}`); 
-        return res.status(500).json({ error: 'An error occurred during logout' });
+        logger.error(`Error during logout: ${error.message}`);
+        res.status(500).json({ error: 'An error occurred during logout' });
     }
 };
+export default handleLogout;

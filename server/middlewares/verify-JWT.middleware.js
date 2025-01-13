@@ -1,22 +1,28 @@
-// ./middleware/verify-JWT.middleware.js
+// services/auth/verify-jwt.service.js
 import jwt from 'jsonwebtoken';
-export const verifyJWT = async (req, res, next) => {
+
+const verifyJWT = async (req, res, next) => {
     try {
-        const authHeader = req.headers.authorization || req.headers.Authorization || req.cookies.jwt_accessToken;
-        if (!authHeader?.startsWith('Bearer ')) return res.sendStatus(401);
+        const authHeader =
+            req.headers.authorization ||
+            req.headers.Authorization ||
+            `Bearer ${req.cookies?.jwt_Token}`;
+        if (!authHeader?.startsWith('Bearer ')) {
+            return res.status(401).json({ message: 'Unauthorized, token missing. Please login again.' });
+        }
+
         const token = authHeader.split(' ')[1];
         if (!token) {
             return res.status(401).json({ message: 'Unauthorized, token missing. Please login again.' });
         }
 
         // Verify the token
-        const decodedToken = await jwt.verify(token, process.env.JWT_SECRET,)
-        if (!decodedToken) return res.Status(403).json({ message: "invalid token" }); 
-        console.log(decodedToken);
-        req.id = decodedToken.userId;
-        // Fetch user from the database if needed
-        // const user = await User.findById(req.user.id);
-        // req.user.role = user.role; // Assuming 'role' is stored in the User model
+        const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        if (!decodedToken) {
+            return res.status(403).json({ message: 'Invalid token. Access denied.' });
+        }
+
+        req.id = decodedToken.userId; 
         next();
     } catch (error) {
         if (error.name === 'TokenExpiredError') {
@@ -25,7 +31,9 @@ export const verifyJWT = async (req, res, next) => {
         if (error.name === 'JsonWebTokenError') {
             return res.status(401).json({ message: 'Unauthorized, invalid token. Please login again.' });
         }
-        console.error('Error in verifyUserAuth middleware:', error);
+        console.error('Error in verifyJWT middleware:', error.message);
         return res.status(500).json({ message: 'Internal server error. Please try again later.' });
     }
 };
+
+export default verifyJWT;
