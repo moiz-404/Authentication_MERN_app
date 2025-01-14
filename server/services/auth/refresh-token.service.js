@@ -25,7 +25,7 @@ const handleRefreshToken = async (req, res) => {
                 const token = jwt.sign(
                     { userId: foundUser._id },
                     process.env.ACCESS_TOKEN_SECRET,
-                    { expiresIn: '1d' } // Access token expiration
+                    { expiresIn: '15m' } // Access token expiration
                 );
 
                 res.json({ message: 'Token refreshed successfully', token });
