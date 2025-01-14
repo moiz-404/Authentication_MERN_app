@@ -6,22 +6,21 @@ const handleRefreshToken = async (req, res) => {
     const refreshToken = req.cookies?.jwt_Token;
 
     if (!refreshToken) {
-        return res.status(401).json({ message: 'Refresh token not found' }); 
+        return res.status(401).json({ message: 'Refresh token not found' });
     }
 
     try {
         const foundUser = await UserModel.findOne({ refreshToken }).exec();
         if (!foundUser) {
-            return res.status(403).json({ message: 'User not found or refresh token mismatch' }); 
+            return res.status(403).json({ message: 'User not found or refresh token mismatch' });
         }
-
+        // Verify the token callback function
         jwt.verify(refreshToken,
             process.env.REFRESH_TOKEN_SECRET,
             (err, decoded) => {
                 if (err || foundUser._id.toString() !== decoded.userId) { // Ensure correct userId
-                    return res.status(403).json({ message: 'Invalid refresh token' }); 
+                    return res.status(403).json({ message: 'Invalid refresh token' });
                 }
-
                 const token = jwt.sign(
                     { userId: foundUser._id },
                     process.env.ACCESS_TOKEN_SECRET,
@@ -36,10 +35,10 @@ const handleRefreshToken = async (req, res) => {
         console.error('Error in handleRefreshToken:', error);
 
         if (error.name === 'TokenExpiredError') {
-            return res.status(403).json({ message: 'Refresh token expired' }); 
+            return res.status(403).json({ message: 'Refresh token expired' });
         }
 
-        res.status(500).json({ message: 'Internal server error, please try again later' }); 
+        res.status(500).json({ message: 'Internal server error, please try again later' });
     }
 };
 export default handleRefreshToken;

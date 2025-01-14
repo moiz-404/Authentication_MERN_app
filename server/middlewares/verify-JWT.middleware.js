@@ -16,14 +16,17 @@ const verifyJWT = async (req, res, next) => {
             return res.status(401).json({ message: 'Unauthorized, token missing. Please login again.' });
         }
 
-        // Verify the token
-        const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        if (!decodedToken) {
-            return res.status(403).json({ message: 'Invalid token. Access denied.' });
-        }
+        // Verify the token callback function
 
-        req.id = decodedToken.userId; 
-        next();
+        jwt.verify(
+            token,
+            process.env.ACCESS_TOKEN_SECRET,
+            (err, decoded) => {
+                if (err) return res.sendStatus(403).json({ message: 'Invalid token. Access denied.' });
+                req.id = decoded.userId; 
+                next();
+            }
+        );
     } catch (error) {
         if (error.name === 'TokenExpiredError') {
             return res.status(401).json({ message: 'Unauthorized, token expired. Please login again.' });
