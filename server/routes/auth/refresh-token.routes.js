@@ -7,7 +7,7 @@ const router = express.Router();
 /**
  * @swagger
  * /auth/refresh-token:
- *   post:
+ *   get:
  *     summary: Refreshes the access token using the refresh token from the cookies
  *     description: This endpoint allows the client to refresh the access token using a valid refresh token stored in the cookies.
  *     tags:
@@ -72,6 +72,6 @@ const router = express.Router();
  *       - cookieAuth: []
  */
 
-router.post('/', handleRefreshToken);
+router.get('/', handleRefreshToken);
 
 export default router;

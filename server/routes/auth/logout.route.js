@@ -16,6 +16,6 @@ const router = express.Router();
  *         description: Logout successful
  */
 // POST /auth/logout - Logout a user
-router.post('/', handleLogout);
+router.get('/', handleLogout);
 
 export default router;
