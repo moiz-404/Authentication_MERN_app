@@ -1,45 +1,63 @@
 version: "3.8"
 
 services:
+  mongo:
+    image: mongo:5.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+  
   server:
     build:
       context: ./server
       dockerfile: Dockerfile
     ports:
-      - "5000:5000" # Maps host port 5000 to container port 5000
+      - "3500:3500"
     environment:
-      - NODE_ENV=development
-      - PORT=3500
-      - MONGO_URI=mongodb://mongo:27017/mern_database
+      - ./server/.env
+    #  ports:
+    #       - "${PORT}:${PORT}"  # Use PORT from .env file
+    #     environment:
+    #       - NODE_ENV=${NODE_ENV}  # Use NODE_ENV from .env file
+    #       - PORT=${PORT}           # Use PORT from .env file
+    #       - MONGO_URI=${MONGO_URI} # Use MONGO_URI from .env
     volumes:
       - ./server:/app
       - /app/node_modules
     depends_on:
       - mongo
     restart: always
+    networks:
+      - app-network
+    command: nnpm run dev
 
   client:
     build:
       context: ./client
       dockerfile: Dockerfile
     ports:
-      - "3000:3000" # Maps host port 3000 to container port 3000
+      - "3000:3000"
     volumes:
-      - ./src:/usr/src/app/src
+      - ./client:/usr/src/app
       - /usr/src/app/node_modules
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
     stdin_open: true
     tty: true
+    depends_on:
+      - server
     restart: always
+    networks:
+      - app-network
 
-  mongo:
-    image: mongo:5.0 # Adjust the version if necessary
-    container_name: mongodb
-    ports:
-      - "27017:27017" # Exposes MongoDB on port 27017
-    volumes:
-      - mongo-data:/data/db # Data persistence
 
 volumes:
   mongo-data:
+
+networks:
+  app-network:
+    driver: bridge
