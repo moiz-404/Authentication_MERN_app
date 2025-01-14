@@ -26,7 +26,7 @@ import sendPasswordResetOtp from './routes/auth/send-password-resetOtp.route.js'
 import resetPassword from './routes/auth/reset-password.route.js';
 import authStatus from './routes/auth/check-auth-status.route.js';
 import googleAuth from './routes/auth/google-0auth.route.js';
-// import verifyJWT from './middleware/verifyJWT.js';
+import verifyJWT from './middlewares/verify-JWT.middleware.js';
 
 // Load environment variables
 dotenv.config();
@@ -75,9 +75,9 @@ app.use('/api/resetPassword', resetPassword);
 app.use('/api/authStatus', authStatus);
 app.use('/api/googleAuth', googleAuth);
 
-app.use('/api/user-profile', userProfile);
 // Middleware to verify JWT for protected routes
-// app.use(verifyJWT);
+app.use(verifyJWT);
+app.use('/api/user-profile', userProfile);
 
 // Handle 404 - Not Found
 app.all('*', (req, res) => {
