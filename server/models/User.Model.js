@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import Profile from './profile.model.js';  
 
 const { Schema } = mongoose;
 

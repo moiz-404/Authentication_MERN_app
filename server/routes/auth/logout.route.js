@@ -7,7 +7,7 @@ const router = express.Router();
 /**
  * @swagger
  * /auth/logout:
- *   post:
+ *   get:
  *     summary: Logout a user
  *     tags:
  *       - Authentication
@@ -15,7 +15,6 @@ const router = express.Router();
  *       200:
  *         description: Logout successful
  */
-// POST /auth/logout - Logout a user
 router.get('/', handleLogout);
 
 export default router;

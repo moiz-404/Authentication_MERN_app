@@ -1,5 +1,5 @@
-// services/auth/lrefresh-token.service.js
-import UserModel from '../model/User.js';
+// services/auth/refresh-token.service.js
+import UserModel from '../../models/user.model.js';
 import jwt from 'jsonwebtoken';
 
 const handleRefreshToken = async (req, res) => {

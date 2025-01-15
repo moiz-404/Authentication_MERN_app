@@ -1,6 +1,6 @@
 // userprofile.route.js
 import express from 'express';
-import userProfileService from '../services/user-profile.service.js';
+import ProfileService from '../services/profile.service.js';
 import verifyJWT from '../middlewares/verify-JWT.middleware.js';
 
 const router = express.Router();
@@ -108,8 +108,8 @@ const router = express.Router();
  */
 
 router.route('/')
-    .put(verifyJWT, userProfileService.updateUserProfile)
-    .get(verifyJWT, userProfileService.getUserProfile)  
-    .delete(verifyJWT, userProfileService.deleteUserProfile);
+    .put(verifyJWT, ProfileService.updateProfile)
+    .get(verifyJWT, ProfileService.getProfile)
+    .delete(verifyJWT, ProfileService.deleteProfile);
 
 export default router;

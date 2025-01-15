@@ -3,16 +3,14 @@ const { Schema } = mongoose;
 
 // Profile schema
 const profileSchema = new Schema({
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
+    firstName: { type: String,},
+    lastName: { type: String,},
     dateOfBirth: { type: Date },
     phone: { type: String },
-    address: {
-        street: { type: String },
-        city: { type: String },
-        state: { type: String },
-        zipCode: { type: String }
-    },
+    address: { type: String },
+    // city: { type: String },
+    // state: { type: String },
+    // zipCode: { type: String },
     bio: { type: String },
     profilePicture: {
         type: String,

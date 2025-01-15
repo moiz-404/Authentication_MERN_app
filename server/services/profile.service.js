@@ -1,7 +1,7 @@
 import UserModel from '../models/user.model.js';
 import logger from '../config/logger.js';
 
-const updateUserProfile = async (req, res) => {
+const updateProfile = async (req, res) => {
     const userId = req.id; // Extracting userId from middleware
     const { firstName, lastName, dateOfBirth, phone, address, bio, profilePicture } = req.body;
 
@@ -32,14 +32,14 @@ const updateUserProfile = async (req, res) => {
         // Save updated profile
         await profile.save();
         logger.info(`Profile updated for user ID ${userId}`);
-        res.status(200).json({ message: 'Profile updated successfully.', profile });
+        res.status(200).json({ message: 'Profile updated successfully.', profile});
     } catch (error) {
         logger.error(`Error updating profile for user ID ${userId}: ${error.message}`);
         res.status(500).json({ message: 'Internal server error.', error: error.message });
     }
 };
 
-const getUserProfile = async (req, res) => {
+const getProfile = async (req, res) => {
     const userId = req.id;
 
     try {
@@ -56,7 +56,7 @@ const getUserProfile = async (req, res) => {
     }
 };
 
-const deleteUserProfile = async (req, res) => {
+const deleteProfile = async (req, res) => {
     const userId = req.id;
 
     try {
@@ -75,9 +75,9 @@ const deleteUserProfile = async (req, res) => {
 };
 
 const userProfileService = {
-    updateUserProfile,
-    getUserProfile,
-    deleteUserProfile,
+    updateProfile,
+    getProfile,
+    deleteProfile,
 };
 
 export default userProfileService;

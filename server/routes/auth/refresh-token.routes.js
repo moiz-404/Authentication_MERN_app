@@ -1,4 +1,4 @@
-// routes/authRoutes/logout.Routes.js
+// routes/auth/logout.Routes.js
 import express from 'express';
 import handleRefreshToken from '../../services/auth/refresh-token.service.js';
 
