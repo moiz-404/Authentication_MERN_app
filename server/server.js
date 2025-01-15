@@ -16,7 +16,7 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerOptions from './config/swagger.js';
 
 import Profile from './routes/profile.route.js';
-import User from './routes/profile.route.js';
+import User from './routes/user.route.js';
 import register from './routes/auth/register.route.js';
 import login from './routes/auth/login.route.js';
 import logout from './routes/auth/logout.route.js';
@@ -25,7 +25,7 @@ import sendVerifyOtp from './routes/auth/send-verifyOtp.route.js';
 import verifyAccount from './routes/auth/verify-account.route.js';
 import sendPasswordResetOtp from './routes/auth/send-password-resetOtp.route.js';
 import resetPassword from './routes/auth/reset-password.route.js';
-import authStatus from './routes/auth/check-auth-status.route.js';
+import checkAuthStatus from './routes/auth/check-auth-status.route.js';
 import googleAuth from './routes/auth/google-0auth.route.js';
 import verifyJWT from './middlewares/verify-JWT.middleware.js';
 
@@ -78,7 +78,7 @@ app.use('/api/VerifyOtp', sendVerifyOtp);
 app.use('/api/verifyAccount', verifyAccount);
 app.use('/api/sendPasswordResetOtp', sendPasswordResetOtp);
 app.use('/api/resetPassword', resetPassword);
-app.use('/api/authStatus', authStatus);
+app.use('/api/checkAuthStatus', checkAuthStatus);
 app.use('/api/googleAuth', googleAuth);
 
 // Middleware to verify JWT for protected routes

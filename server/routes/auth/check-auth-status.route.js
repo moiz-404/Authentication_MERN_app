@@ -1,6 +1,7 @@
 // ./routes/auth/check-auth-status.route.js
 import express from 'express';
 import checkAuthStatus from '../../services/auth/check-auth-status.service.js';
+import verifyJWT from '../../middlewares/verify-JWT.middleware.js';
 
 const router = express.Router();
 
@@ -18,6 +19,6 @@ const router = express.Router();
  *       401:
  *         description: Unauthorized
  */
-router.get('/auth-status', checkAuthStatus);
+router.get('/', verifyJWT,checkAuthStatus);
 
 export default router;

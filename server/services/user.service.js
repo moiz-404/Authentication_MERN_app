@@ -22,7 +22,7 @@ const updateUserName = async (req, res) => {
         logger.info(`Username updated for user ID ${userId}`);
         return res.status(200).json({
             message: 'Username updated successfully.',
-            user: updatedUser,
+            user: updatedUser.username,
         });
     } catch (error) {
         logger.error(`Error updating username for user ID ${userId}: ${error.message}`);

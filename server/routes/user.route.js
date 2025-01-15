@@ -12,7 +12,7 @@ const router = express.Router();
  *   description: API for managing users
  */
 
-er.route('/')
+router.route('/')
     .put(verifyJWT, UserService.updateUserName)
     .put(verifyJWT, UserService.updateUserPassword)
     .get(verifyJWT, UserService.getUser);
