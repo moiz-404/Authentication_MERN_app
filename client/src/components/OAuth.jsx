@@ -32,11 +32,11 @@ export default function OAuth() {
       }
   
       dispatch(signInSuccess(response.data));
-      toast.success('Sign-in successful!');  // Toast for success
+      toast.success('Sign-in successful!'); 
       navigate('/home');
     } catch (error) {
       console.error('Google login error:', error);
-      toast.error(error.message || 'Sign-in failed. Please try again.');  // Toast for error
+      toast.error(error.message || 'Sign-in failed. Please try again.');
     }
   };
 
