@@ -2,7 +2,7 @@ import UserModel from '../models/user.model.js';
 import logger from '../config/logger.js';
 
 const updateProfile = async (req, res) => {
-    const userId = req.id; // Extracting userId from middleware
+    const userId = req.user._id; // Extracting userId from middleware
     const { firstName, lastName, dateOfBirth, phone, address, bio, profilePicture } = req.body;
 
     if (!firstName || !lastName) {
@@ -40,7 +40,7 @@ const updateProfile = async (req, res) => {
 };
 
 const getProfile = async (req, res) => {
-    const userId = req.id;
+    const userId = req.user._id;
 
     try {
         const user = await UserModel.findById(userId).populate('profile');
@@ -57,7 +57,7 @@ const getProfile = async (req, res) => {
 };
 
 const deleteProfile = async (req, res) => {
-    const userId = req.id;
+    const userId = req.user._id;
 
     try {
         const user = await UserModel.findById(userId);

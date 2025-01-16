@@ -55,7 +55,7 @@ app.use(credentials);
 app.use(cors(corsOptions));
 
 // Built-in middleware to handle URL-encoded form data
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 // Built-in middleware for JSON
 app.use(express.json());

@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 
 // Update username
 const updateUserName = async (req, res) => {
-    const userId = req.id; // Extracting userId from middleware
+    const userId = req.user._id; // Extracting userId from middleware
     try {
         const user = await UserModel.findById(userId).exec();
         if (!user) {
@@ -32,7 +32,7 @@ const updateUserName = async (req, res) => {
 
 // Update password with new password and confirm password
 const updateUserPassword = async (req, res) => {
-    const userId = req.id; // Extracting userId from middleware
+    const userId = req.user._id; // Extracting userId from middleware
 
     // Destructure passwords from the request body
     const { newPassword, confirmPassword } = req.body;
@@ -78,7 +78,7 @@ const updateUserPassword = async (req, res) => {
 
 // Get user details
 const getUser = async (req, res) => {
-    const userId = req.id;
+    const userId = req.user._id;
     logger.debug(`Get user called for user ID: ${userId}`);
 
     try {
