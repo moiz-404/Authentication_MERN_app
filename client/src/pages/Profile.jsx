@@ -28,12 +28,12 @@ const Profile = () => {
     'Notification',
   ];
 
-  const dispatch = useDispatch();
   const fileRef = useRef(null);
   const [image, setImage] = useState(null);
   const [imagePercent, setImagePercent] = useState(0);
   const [imageError, setImageError] = useState(false);
   const [formData, setFormData] = useState({});
+  const dispatch = useDispatch();
 
   const { currentUser, loading, error } = useSelector((state) => state.user);
 
@@ -313,7 +313,7 @@ const Profile = () => {
                       {error && `Error: ${error.message}`}
                     </p>
                     <p className="text-green-700 mt-5">
-                      {updateSuccess && 'User is updated successfully!'}
+                      { updateProfileSuccess && 'User is updated successfully!'}
                     </p>
                   </div>
                 </div>

@@ -25,11 +25,9 @@ const CreateProfile = () => {
   const [imagePercent, setImagePercent] = useState(0);
   const [imageError, setImageError] = useState(false);
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(null);
+  const [errors, setError] = useState(null);
 
-  const { currentUser, loading, createProfileSuccess } = useSelector(
-    (state) => state.user,
-  );
+  const { currentUser, loading, error } = useSelector((state) => state.user);
 
   useEffect(() => {
     if (image) handleFileUpload(image);
@@ -48,15 +46,7 @@ const CreateProfile = () => {
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setImagePercent(Math.round(progress));
       },
-      (error) => {
-        if (error.code === 'storage/unauthorized') {
-          setImageError('Unauthorized access.');
-        } else if (error.code === 'storage/unknown') {
-          setImageError('Unknown error occurred.');
-        } else {
-          setImageError('Error uploading image.');
-        }
-      },
+      () => setImageError(true),
       () =>
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setFormData((prev) => ({ ...prev, profilePicture: downloadURL }));
@@ -73,7 +63,6 @@ const CreateProfile = () => {
     e.preventDefault();
 
     if (!formData.firstName || !formData.lastName) {
-      setError({ message: 'Please fill out all required fields.' });
       toast.error('Please fill out all required fields.');
       return;
     }
