@@ -34,10 +34,6 @@ const Profile = () => {
   const [imagePercent, setImagePercent] = useState(0);
   const [imageError, setImageError] = useState(false);
   const [formData, setFormData] = useState({});
-  const [updateSuccess, setUpdateSuccess] = useState(false);
-  const [userError, setUserError] = useState(null);
-  const [userData, setUserData] = useState(null);
-  const [loadingUser, setLoadingUser] = useState(false);
 
   const { currentUser, loading, error } = useSelector((state) => state.user);
 
@@ -71,28 +67,6 @@ const Profile = () => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-  // Function to fetch user details
-  const handlegetUser = async (e) => {
-    e.preventDefault();
-    try {
-      if (loading) return; // Prevent duplicate requests
-
-      setLoadingUser(true); // Set loading state to true
-      // Use the apiClient for the POST request
-      const res = await apiClient.get(`/profile/${currentUser._id}`, formData);
-      const data = await res.json();
-
-      if (!data.success) {
-        setUserError(data.message || 'Failed to fetch user data');
-        return;
-      }
-
-      setUserData(data.user); // Assuming the user data is under `data.user`
-    } catch (err) {
-      setUserError(err.message);
-    } 
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -105,9 +79,7 @@ const Profile = () => {
         dispatch(updateUserFailure(data.message || 'Failed to update user.'));
         return;
       }
-
       dispatch(updateUserSuccess(data));
-      setUpdateSuccess(true);
     } catch (err) {
       dispatch(updateUserFailure(err.message));
     }

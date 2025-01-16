@@ -19,12 +19,12 @@ import { apiClient } from './apiUrl';
 
 const CreateProfile = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const fileRef = useRef(null);
   const [image, setImage] = useState(null);
   const [imagePercent, setImagePercent] = useState(0);
   const [imageError, setImageError] = useState(false);
   const [formData, setFormData] = useState({});
-  const navigate = useNavigate();
   const [error, setError] = useState(null);
 
   const { currentUser, loading, createProfileSuccess } = useSelector(
@@ -80,33 +80,22 @@ const CreateProfile = () => {
 
     try {
       dispatch(createProfileStart());
-      const { data, status } = await apiClient.post('/profile', formData);
+      const { data, status } = await apiClient.put('/profile', formData);
 
-      if (status === 201 && data.success) {
-        dispatch(createProfileSuccess(data.profile));
-        toast.success('Profile creation successfully!');
-        navigate('/home');
-      } else {
+      if (!status === 201 && !data.success) {
         dispatch(
           createProfileFailure(data.message || 'Profile creation failed.'),
         );
         toast.error(data.message || 'Profile creation failed.');
       }
+      dispatch(createProfileSuccess(data.profile));
+      toast.success('Profile creation successfully!');
+      navigate('/home');
     } catch (err) {
       dispatch(
         createProfileFailure('An error occurred during profile creation.'),
       );
       toast.error('An error occurred during profile creation.');
-    }
-  };
-
-  const handleSignOut = async () => {
-    try {
-      await apiClient.post('/logout');
-      dispatch(signOut());
-      toast.success('Signed out successfully!');
-    } catch (err) {
-      toast.error('Error signing out.');
     }
   };
 
@@ -279,13 +268,6 @@ const CreateProfile = () => {
                 className="bg-zinc-500 text-white px-4 py-2 rounded-md hover:bg-stone-400 transition-colors duration-200 cursor-pointer w-full md:w-auto"
               >
                 Skip
-              </button>
-
-              <button
-                onClick={handleSignOut}
-                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-400 transition-colors duration-200 cursor-pointer w-full md:w-auto"
-              >
-                Signout
               </button>
 
               <button

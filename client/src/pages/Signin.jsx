@@ -1,9 +1,13 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from '../redux/user/userSlice';
 import OAuth from '../components/OAuth';
-import { toast } from 'react-toastify'; 
+import { toast } from 'react-toastify';
 import { apiClient } from './apiUrl';
 
 const Signin = () => {
@@ -18,43 +22,45 @@ const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Validate form fields
     if (!formData.email || !formData.password) {
-      dispatch(signInFailure({ message: 'Both email and password are required.' }));
+      dispatch(
+        signInFailure({ message: 'Both email and password are required.' }),
+      );
       toast.error('Both email and password are required.'); // Added user feedback
       return;
     }
-  
+
     try {
       dispatch(signInStart()); // Set loading state
-  
+
       // Make the POST request using apiClient
       const { data } = await apiClient.post('/login', formData);
-  
-      if (data.success) {
-        dispatch(signInSuccess(data)); // On success, store user data
-        navigate('/home'); // Redirect to home page
-        toast.success('Successfully signed in!'); // Notify success
-      } else {
+
+      if (!data.success) {
         // Handle any unexpected failures from the backend
         dispatch(signInFailure({ message: data.message || 'Sign-in failed.' }));
         toast.error(data.message || 'Sign-in failed. Please try again.');
       }
+      dispatch(signInSuccess(data)); // On success, store user data
+      navigate('/home');
+      toast.success('Successfully signed in!');
     } catch (err) {
-      console.error('Error during sign-in:', err);
-  
       // Dispatch failure action with a user-friendly error message
       dispatch(
         signInFailure({
           message:
-            err.response?.data?.message || 'An error occurred. Please try again later.',
-        })
+            err.response?.data?.message ||
+            'An error occurred. Please try again later.',
+        }),
       );
-      toast.error(err.response?.data?.message || 'An error occurred. Please try again later.');
-    } 
+      toast.error(
+        err.response?.data?.message ||
+          'An error occurred. Please try again later.',
+      );
+    }
   };
-  
 
   return (
     <div className="flex items-center justify-center h-screen bg-gradient-to-b from-purple-200 to-purple-300">
@@ -65,7 +71,9 @@ const Signin = () => {
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {/* Email Input */}
           <div>
-            <label htmlFor="email" className="block text-gray-300 mb-1">Email</label>
+            <label htmlFor="email" className="block text-gray-300 mb-1">
+              Email
+            </label>
             <div className="flex items-center bg-gray-800 rounded-md px-3 py-2">
               <span className="mr-2 text-gray-400">📧</span>
               <input
@@ -81,7 +89,9 @@ const Signin = () => {
 
           {/* Password Input */}
           <div>
-            <label htmlFor="password" className="block text-gray-300 mb-1">Password</label>
+            <label htmlFor="password" className="block text-gray-300 mb-1">
+              Password
+            </label>
             <div className="flex items-center bg-gray-800 rounded-md px-3 py-2">
               <span className="mr-2 text-gray-400">🔒</span>
               <input
@@ -97,7 +107,9 @@ const Signin = () => {
 
           {/* Forgot Password */}
           <div className="text-right">
-            <a href="#" className="text-sm text-blue-400 hover:underline">Forgot password?</a>
+            <a href="#" className="text-sm text-blue-400 hover:underline">
+              Forgot password?
+            </a>
           </div>
 
           {/* Submit Button */}
@@ -111,7 +123,11 @@ const Signin = () => {
         </form>
 
         {/* Error Message */}
-        {error?.message && <p className="text-sm text-center text-red-700 mt-4">{error.message}</p>}
+        {error?.message && (
+          <p className="text-sm text-center text-red-700 mt-4">
+            {error.message}
+          </p>
+        )}
 
         {/* OR Divider */}
         <div className="flex items-center w-full my-4">
@@ -125,7 +141,9 @@ const Signin = () => {
         {/* Sign Up Option */}
         <p className="text-center text-gray-400 mt-4 text-sm">
           Don't have an account?{' '}
-          <Link to="/signup" className="text-blue-400 hover:underline">Sign up</Link>
+          <Link to="/signup" className="text-blue-400 hover:underline">
+            Sign up
+          </Link>
         </p>
       </div>
     </div>
