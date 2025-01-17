@@ -74,6 +74,77 @@ const deleteProfile = async (req, res) => {
     }
 };
 
+
+const deactivateUser = async (req, res) => {
+    const userId = req.user._id;
+
+    try {
+        const user = await UserModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+        
+        // Soft delete: Deactivate the user by setting 'active' to false
+        user.active = false;
+        await user.save();
+        
+        logger.info(`User with ID ${userId} deactivated successfully.`);
+        res.status(200).json({ message: 'User deactivated successfully.' });
+    } catch (error) {
+        logger.error(`Error deactivating user with ID ${userId}: ${error.message}`);
+        res.status(500).json({ message: 'Internal server error.', error: error.message });
+    }
+};
+
+// const deleteUserIdOnly = async (req, res) => {
+//     const userId = req.user._id;
+
+//     try {
+//         const user = await UserModel.findById(userId);
+//         if (!user) {
+//             return res.status(404).json({ message: 'User not found.' });
+//         }
+        
+//         // Remove the user ID but keep profile info intact
+//         user._id = null; // Reset the user ID
+//         await user.save();
+        
+//         logger.info(`User ID for user with ID ${userId} deleted successfully.`);
+//         res.status(200).json({ message: 'User ID deleted, profile info retained.' });
+//     } catch (error) {
+//         logger.error(`Error deleting user ID for user with ID ${userId}: ${error.message}`);
+//         res.status(500).json({ message: 'Internal server error.', error: error.message });
+//     }
+// };
+
+// deleteProfile function to perform a soft delete:
+// const deleteProfile = async (req, res) => {
+//     const userId = req.user._id;
+
+//     try {
+//         const user = await UserModel.findById(userId);
+//         if (!user) {
+//             return res.status(404).json({ message: 'User not found.' });
+//         }
+
+//         // Soft delete: deactivate the user but retain the profile information
+//         user.isActive = false;  // Assuming `isActive` is a boolean field
+//         user.email = null;      // Remove email
+//         user.password = null;   // Remove password
+
+//         // Save the user with updated data
+//         await user.save();
+        
+//         logger.info(`User profile with ID ${userId} deactivated successfully.`);
+//         res.status(200).json({ message: 'User deactivated and sensitive data removed.' });
+//     } catch (error) {
+//         logger.error(`Error deactivating profile for user ID ${userId}: ${error.message}`);
+//         res.status(500).json({ message: 'Internal server error.', error: error.message });
+//     }
+// };
+
+
+
 const userProfileService = {
     updateProfile,
     getProfile,
