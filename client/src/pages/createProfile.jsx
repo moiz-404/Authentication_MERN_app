@@ -2,10 +2,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useRef, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  createProfileStart,
-  createProfileSuccess,
-  createProfileFailure,
-  signOut,
+  updateProfileStart,
+  updateProfileSuccess,
+  updateProfileFailure,
 } from '../redux/user/userSlice';
 import {
   getDownloadURL,
@@ -25,7 +24,6 @@ const CreateProfile = () => {
   const [imagePercent, setImagePercent] = useState(0);
   const [imageError, setImageError] = useState(false);
   const [formData, setFormData] = useState({});
-  const [errors, setError] = useState(null);
 
   const { currentUser, loading, error } = useSelector((state) => state.user);
 
@@ -68,21 +66,21 @@ const CreateProfile = () => {
     }
 
     try {
-      dispatch(createProfileStart());
+      dispatch(updateProfileStart());
       const { data, status } = await apiClient.put('/profile', formData);
 
       if (!status === 201 && !data.success) {
         dispatch(
-          createProfileFailure(data.message || 'Profile creation failed.'),
+          updateProfileFailure(data.message || 'Profile creation failed.'),
         );
         toast.error(data.message || 'Profile creation failed.');
       }
-      dispatch(createProfileSuccess(data.profile));
+      dispatch(updateProfileSuccess(data.profile));
       toast.success('Profile creation successfully!');
       navigate('/home');
     } catch (err) {
       dispatch(
-        createProfileFailure('An error occurred during profile creation.'),
+        updateProfileFailure('An error occurred during profile creation.'),
       );
       toast.error('An error occurred during profile creation.');
     }
@@ -90,17 +88,21 @@ const CreateProfile = () => {
 
   const handleSkip = () => {
     if (!formData.firstName || !formData.lastName) {
-      setError({ message: 'Please firstName && lastName is required fields.' });
+      dispatch(
+        updateProfileFailure(
+          'Please firstName && lastName is required fields.',
+        ),
+      );
       toast.error('Please firstName && lastName is required fields.');
       return;
     }
     try {
-      dispatch(createProfileStart());
+      dispatch(updateProfileStart());
       toast.info('Profile creation skipped.');
       navigate('/home');
     } catch (err) {
       dispatch(
-        createProfileFailure('An error occurred during profile creation.'),
+        updateProfileFailure('An error occurred during profile creation.'),
       );
       toast.error('An error occurred during profile creation.');
     }
@@ -273,7 +275,7 @@ const CreateProfile = () => {
                 {error && `Error: ${error.message}`}
               </p>
               <p className="text-green-700">
-                {createProfileSuccess && 'User profile created successfully!'}
+                {updateProfileSuccess && 'User profile created successfully!'}
               </p>
             </div>
           </div>

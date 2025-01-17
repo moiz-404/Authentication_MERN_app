@@ -25,7 +25,6 @@ const Signup = () => {
     try {
       setLoading(true); // Indicate loading state
       setError(false); // Reset error state
-
       // Make API request
       const { data, status } = await apiClient.post(`/register`, formData);
 

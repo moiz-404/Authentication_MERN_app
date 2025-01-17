@@ -4,6 +4,7 @@ const initialState = {
   currentUser: null,
   loading: false,
   error: false,
+  token:'',
 };
 
 const userSlice = createSlice({
@@ -13,8 +14,11 @@ const userSlice = createSlice({
     signInStart: (state) => {
       state.loading = true;
     },
+    
     signInSuccess: (state, action) => {
-      state.currentUser = action.payload;
+      const {token,user} = action.payload;
+      state.currentUser = user;
+      state.token = token;
       state.loading = false;
       state.error = false;
     },
@@ -34,18 +38,6 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    deleteUserStart: (state) => {
-      state.loading = true;
-    },
-    deleteUserSuccess: (state) => {
-      state.currentUser = null;
-      state.loading = false;
-      state.error = false;
-    },
-    deleteUserFailure: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
     getUserStart: (state) => {
       state.loading = true;
     },
@@ -57,22 +49,6 @@ const userSlice = createSlice({
     getUserFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
-    },
-    createProfileStart: (state) => {
-      state.loading = true;
-      state.error = false;
-      state.success = false;
-    },
-    createProfileSuccess: (state, action) => {
-      state.profile = action.payload;
-      state.loading = false;
-      state.success = true;
-      state.error = false;
-    },
-    createProfileFailure: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-      state.success = false;
     },
     getProfileStart: (state) => {
       state.loading = true;
@@ -98,7 +74,6 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-
     deleteProfileStart: (state) => {
       state.loading = true;
     },
@@ -126,15 +101,9 @@ export const {
   updateUserFailure,
   updateUserStart,
   updateUserSuccess,
-  deleteUserFailure,
-  deleteUserStart,
-  deleteUserSuccess,
   getUserStart,
   getUserSuccess,
   getUserFailure,
-  createProfileStart,
-  createProfileSuccess,
-  createProfileFailure,
   getProfileStart,
   getProfileSuccess,
   getProfileFailure,
