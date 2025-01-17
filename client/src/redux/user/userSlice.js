@@ -4,7 +4,7 @@ const initialState = {
   currentUser: null,
   loading: false,
   error: false,
-  token:'',
+  token: '',
 };
 
 const userSlice = createSlice({
@@ -16,7 +16,7 @@ const userSlice = createSlice({
     },
     
     signInSuccess: (state, action) => {
-      const {token,user} = action.payload;
+      const { token, user } = action.payload;
       state.currentUser = user;
       state.token = token;
       state.loading = false;
@@ -30,7 +30,9 @@ const userSlice = createSlice({
       state.loading = true;
     },
     updateUserSuccess: (state, action) => {
-      state.currentUser = action.payload;
+      const { token, user } = action.payload;
+      state.currentUser = user;
+      state.token = token;
       state.loading = false;
       state.error = false;
     },
@@ -42,7 +44,9 @@ const userSlice = createSlice({
       state.loading = true;
     },
     getUserSuccess: (state, action) => {
-      state.currentUser = action.payload;
+      const { token, user } = action.payload;
+      state.currentUser = user;
+      state.token = token;
       state.loading = false;
       state.error = false;
     },
@@ -54,7 +58,9 @@ const userSlice = createSlice({
       state.loading = true;
     },
     getProfileSuccess: (state, action) => {
-      state.profile = action.payload;
+      const { token, user } = action.payload;
+      state.currentUser = user;
+      state.token = token;
       state.loading = false;
       state.error = false;
     },
@@ -66,7 +72,9 @@ const userSlice = createSlice({
       state.loading = true;
     },
     updateProfileSuccess: (state, action) => {
-      state.profile = action.payload;
+      const { token, user } = action.payload;
+      state.currentUser = user;
+      state.token = token;
       state.loading = false;
       state.error = false;
     },
@@ -78,9 +86,9 @@ const userSlice = createSlice({
       state.loading = true;
     },
     deleteProfileSuccess: (state) => {
-      state.profile = null;
+      state.currentUser = null;
       state.loading = false;
-      state.error = false;
+      state.error = null;
     },
     deleteProfileFailure: (state, action) => {
       state.loading = false;
@@ -89,7 +97,8 @@ const userSlice = createSlice({
     signOut: (state) => {
       state.currentUser = null;
       state.loading = false;
-      state.error = false;
+      state.error = null; // Fix: Set error to null instead of false
+      state.token = ''; // Clear token on sign out
     },
   },
 });
