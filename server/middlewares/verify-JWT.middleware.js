@@ -1,6 +1,6 @@
 // services/auth/verify-jwt.service.js
 import jwt from 'jsonwebtoken';
-import UserModels from '../../models/user.model.js';
+import UserModels from '../models/user.model.js';
 
 const verifyJWT = async (req, res, next) => {
     try {
