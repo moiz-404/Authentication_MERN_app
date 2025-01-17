@@ -13,24 +13,25 @@ const googleAuth = async (req, res, next) => {
             const token = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
             const { password, ...rest } = user._doc;
 
-            return res
-                .cookie('jwt_Token', token, {
-                    httpOnly: true,
-                    expires: new Date(Date.now() + 3600000),
-                }).status(200).json({message: 'Logged in successfully'}, rest);
+            return res.cookie('jwt_Token', token, {
+                httpOnly: true,
+                expires: new Date(Date.now() + 3600000),
+            }).status(200).json({ message: 'Logged in successfully' }, rest);
         }
 
         const generatedPassword = `${Math.random().toString(36).slice(-8)}${Math.random().toString(36).slice(-8)}`;
         const hashedPassword = await bcrypt.hash(generatedPassword, 10);
 
-        user = new UserModels({
+        const newProfile = new ProfileModel({});
+        await newProfile.save();
+
+        user = await new UserModels.create({
             username: `${name.replace(/\s+/g, '').toLowerCase()}${Date.now()}`,
             email,
             password: hashedPassword,
             profilePicture: photo,
+            profile: newProfile._id,
         });
-
-        await user.save();
 
         const token = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
         const { password: _, ...rest } = user._doc;
@@ -39,7 +40,7 @@ const googleAuth = async (req, res, next) => {
             .cookie('jwt_Token', token, {
                 httpOnly: true,
                 expires: new Date(Date.now() + 3600000),
-            }).status(200).json({message: 'Logged in successfully'}, rest);
+            }).status(200).json({ message: 'Logged in successfully' }, rest);
     } catch (error) {
         console.error('Error during Google Auth:', error);
         return res.status(500).json({ message: 'Internal Server Error', error: error.message });
@@ -48,4 +49,3 @@ const googleAuth = async (req, res, next) => {
 
 export default googleAuth;
 
- 

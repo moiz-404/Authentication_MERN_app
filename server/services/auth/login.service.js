@@ -45,7 +45,7 @@ const handleLogin = async (req, res, next) => {
 
         res.status(200).json({
             message: 'Logged in successfully',
-            token,
+            token,refreshToken
         });
     } catch (error) {
         logger.error('Error during login: ' + error.message);

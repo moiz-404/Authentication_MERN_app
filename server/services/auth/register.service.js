@@ -84,4 +84,4 @@ const handleRegister = async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 };
-export default handleRegister;
+export default handleRegister; 

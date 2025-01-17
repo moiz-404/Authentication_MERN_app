@@ -29,7 +29,7 @@ const resetPassword = async (req, res) => {
         }
 
         // Encrypt the password
-        const hashedPassword = await bcrypt.hashSync(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
         
         // Mark user as verified and reset OTP fields
         user.password = hashedPassword;

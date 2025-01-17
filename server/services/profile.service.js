@@ -4,22 +4,18 @@ import logger from '../config/logger.js';
 const updateProfile = async (req, res) => {
     const userId = req.user._id; // Extracting userId from middleware
     const { firstName, lastName, dateOfBirth, phone, address, bio, profilePicture } = req.body;
-
     if (!firstName || !lastName) {
         return res.status(400).json({ message: 'First and last names are required.' });
     }
-
     try {
         const user = await UserModel.findById(userId).populate('profile');
         if (!user) {
             return res.status(404).json({ message: 'User not found.' });
         }
-
         const profile = user.profile;
         if (!profile) {
             return res.status(404).json({ message: 'Profile not found.' });
         }
-
         // Update profile fields
         if (firstName) profile.firstName = firstName;
         if (lastName) profile.lastName = lastName;
@@ -28,7 +24,6 @@ const updateProfile = async (req, res) => {
         if (address) profile.address = address;
         if (bio) profile.bio = bio;
         if (profilePicture) profile.profilePicture = profilePicture;
-
         // Save updated profile
         await profile.save();
         logger.info(`Profile updated for user ID ${userId}`);

@@ -4,7 +4,7 @@ import ProfileService from '../services/profile.service.js';
 import verifyJWT from '../middlewares/verify-JWT.middleware.js';
 
 const router = express.Router();
-
+ 
 /**
  * @swagger
  * tags:
