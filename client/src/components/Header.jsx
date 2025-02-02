@@ -47,7 +47,7 @@ const Header = () => {
               {currentUser ? (
                 <button onClick={handleLogout} className="flex items-center space-x-2">
                   <img
-                    src={currentUser.profilePicture || '/default-avatar.png'}
+                    src={currentUser.profilePicture}
                     alt="profile"
                     className="h-7 w-7 rounded-full object-cover"
                   />
