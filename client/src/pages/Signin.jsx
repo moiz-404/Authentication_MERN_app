@@ -23,42 +23,43 @@ const Signin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate form fields
+    // Check if email or password is missing
     if (!formData.email || !formData.password) {
       dispatch(
         signInFailure({ message: 'Both email and password are required.' }),
       );
-      toast.error('Both email and password are required.'); // Added user feedback
+      toast.error('Both email and password are required.');
       return;
     }
 
     try {
-      dispatch(signInStart()); // Set loading state
-
-      // Make the POST request using apiClient
+      // Start sign-in process
+      dispatch(signInStart());
       const { data } = await apiClient.post('/login', formData);
 
-      if (!data.success) {
-        // Handle any unexpected failures from the backend
+      // Debugging logs for the response
+      console.log('API Response:', data);
+
+      // Handle unsuccessful login
+      if (!data.status) {
         dispatch(signInFailure({ message: data.message || 'Sign-in failed.' }));
         toast.error(data.message || 'Sign-in failed. Please try again.');
+      } else {
+        // Successfully signed in
+        dispatch(signInSuccess(data));
+        toast.success('Successfully signed in!');
+        navigate('/home');
       }
-      dispatch(signInSuccess(data)); // On success, store user data
-      navigate('/home');
-      toast.success('Successfully signed in!');
     } catch (err) {
-      // Dispatch failure action with a user-friendly error message
-      dispatch(
-        signInFailure({
-          message:
-            err.response?.data?.message ||
-            'An error occurred. Please try again later.',
-        }),
-      );
-      toast.error(
+      console.log('Error during sign-in:', err); // Debugging log
+
+      const errorMessage =
         err.response?.data?.message ||
-          'An error occurred. Please try again later.',
-      );
+        'An error occurred. Please try again later.';
+
+      // Dispatch failure and display error toast
+      dispatch(signInFailure({ message: errorMessage }));
+      toast.error(errorMessage);
     }
   };
 

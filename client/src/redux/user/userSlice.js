@@ -15,7 +15,7 @@ const userSlice = createSlice({
       state.loading = true;
     },
     signInSuccess: (state, action) => {
-      const {token,user} = action.payload;
+      const {token, user} = action.payload;
       state.currentUser = user;
       state.token = token;
       state.loading = false;
@@ -82,9 +82,9 @@ const userSlice = createSlice({
       state.loading = true;
     },
     deleteProfileSuccess: (state) => {
-      state.profile = null;
+      state.currentUser = null;
       state.loading = false;
-      state.error = false;
+      state.error = null;
     },
     deleteProfileFailure: (state, action) => {
       state.loading = false;
@@ -93,7 +93,8 @@ const userSlice = createSlice({
     signOut: (state) => {
       state.currentUser = null;
       state.loading = false;
-      state.error = false;
+      state.error = null; // Fix: Set error to null instead of false
+      state.token = ''; // Clear token on sign out
     },
   },
 });

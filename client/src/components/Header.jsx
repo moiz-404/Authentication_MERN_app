@@ -7,7 +7,8 @@ const Header = () => {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const logout = async () => {
+
+  const handleLogout = () => {
     dispatch(signOut());
     navigate('/signin');
   };
@@ -30,36 +31,35 @@ const Header = () => {
         </div>
 
         {/* Navigation Section */}
-        <nav className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-20">
+        <nav>
           <ul className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
-            <Link
-              to="/home"
-              className="text-gray-700 hover:text-gray-900 font-medium transition-colors duration-200"
-            >
-              <li>Home</li>
-            </Link>
-            <Link
-              to="/profile"
-              className="text-gray-700 hover:text-gray-900 font-medium transition-colors duration-200"
-            >
-              <li>Profile</li>
-            </Link>
-            <li >
+            <li>
+              <Link to="/home" className="text-gray-700 hover:text-gray-900 font-medium transition-colors duration-200">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link to="/profile" className="text-gray-700 hover:text-gray-900 font-medium transition-colors duration-200">
+                Profile
+              </Link>
+            </li>
+            <li>
               {currentUser ? (
-                <img
-                  src={currentUser.profilePicture}
-                  alt="profile"
-                  className="h-7 w-7 rounded-full object-cover"
-                  onClick={() => logout()}
-                />
+                <button onClick={handleLogout} className="flex items-center space-x-2">
+                  <img
+                    src={currentUser.profilePicture || '/default-avatar.png'}
+                    alt="profile"
+                    className="h-7 w-7 rounded-full object-cover"
+                  />
+                  <span className="text-gray-700 hover:text-gray-900 font-medium transition-colors duration-200">Logout</span>
+                </button>
               ) : (
-                <li onClick={() => logout()}>Sign In</li>
+                <Link to="/signin" className="text-gray-700 hover:text-gray-900 font-medium transition-colors duration-200">
+                  Sign In
+                </Link>
               )}
             </li>
           </ul>
-          {/* <button className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 font-medium border border-gray-300 px-4 py-2 rounded-full shadow-sm hover:bg-gray-100 transition-colors duration-200">
-            <span>&larr;</span> Login
-          </button> */}
         </nav>
       </div>
     </header>
