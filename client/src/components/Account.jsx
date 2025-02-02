@@ -1,12 +1,7 @@
 import { apiClient } from '../pages/apiUrl';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRef, useState, useEffect } from 'react';
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable,
-} from 'firebase/storage';
+
 import app from '../firebase';
 import {
   getProfileStart,
@@ -22,46 +17,45 @@ import {
 } from '../redux/user/userSlice';
 
 const Account = () => {
-  const fileRef = useRef(null);
-  const [image, setImage] = useState(null);
-  const [imagePercent, setImagePercent] = useState(0);
-  const [imageError, setImageError] = useState(false);
-  const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
 
-  const { currentUser, loading, error } = useSelector((state) => state.user);
-
-  useEffect(() => {
-    if (image) handleFileUpload(image);
-  }, [image]);
-
-  const handleFileUpload = (image) => {
-    const storage = getStorage(app);
-    const fileName = `${Date.now()}_${image.name}`;
-    const storageRef = ref(storage, fileName);
-    const uploadTask = uploadBytesResumable(storageRef, image);
-
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setImagePercent(Math.round(progress));
-      },
-      () => setImageError(true),
-      () =>
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setFormData((prev) => ({ ...prev, profilePicture: downloadURL }));
-          setImagePercent(0); // Reset after upload
-        }),
-    );
-  };
+  const { currentUser, loading, error, token } = useSelector(
+    (state) => state.user,
+  );
+  const [formData, setFormData] = useState(currentUser || {});
+  console.log(formData, 'formData');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
+  
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (loading) return;
+  //     try {
+  //       dispatch(getProfileStart());
+  //       const res = await apiClient.get(`/profile`, {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  
+  //       if (res.status !== 200) {
+  //         dispatch(getProfileFailure(res.message || 'Failed to get user.'));
+  //         return;
+  //       }
+  //       dispatch(getProfileSuccess(res.data));
+  //     } catch (err) {
+  //       dispatch(getProfileFailure(err.message));
+  //     }
+  //   };
+  
+  //   fetchData();
+  // }, [token, dispatch]);
+  
 
   const handleSubmit = async (e) => {
+    console.log(token, 'token');
     e.preventDefault();
     if (loading) return; // Prevent duplicate requests
 
@@ -69,17 +63,14 @@ const Account = () => {
       dispatch(updateProfileStart());
       const res = await apiClient.put(`/profile`, formData, {
         headers: {
-          Authorization: `Bearer ${currentUser.token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-      const data = await res.json();
-      if (!data.success) {
-        dispatch(
-          updateProfileFailure(data.message || 'Failed to update user.'),
-        );
+      if (res.status !== 200) {
+        dispatch(updateProfileFailure(res.message || 'Failed to update user.'));
         return;
       }
-      dispatch(updateProfileSuccess(data));
+      dispatch(updateProfileSuccess(res.data));
     } catch (err) {
       dispatch(updateProfileFailure(err.message));
     }
@@ -91,14 +82,13 @@ const Account = () => {
       dispatch(deleteProfileStart());
       const res = await apiClient.delete(`/profile`, {
         headers: {
-          Authorization: `Bearer ${currentUser.token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-      const data = await res.json();
 
-      if (!data.success) {
+      if (res.status !== 200) {
         dispatch(
-          deleteProfileFailure(data.message || 'Failed to delete account.'),
+          deleteProfileFailure(res.message || 'Failed to delete account.'),
         );
         return;
       }
@@ -121,7 +111,6 @@ const Account = () => {
   const handleCancel = () => {
     setFormData({}); // Reset form data
     dispatch(updateProfileSuccess(false)); // Clear success message
-    setImage(null); // Clear uploaded image
   };
 
   return (
@@ -132,7 +121,7 @@ const Account = () => {
             Username
           </label>
           <input
-            value={formData.username || currentUser.username || ''}
+            value={formData.firstName || currentUser.username || ''}
             type="text"
             id="username"
             placeholder="Username"
@@ -146,7 +135,7 @@ const Account = () => {
               First Name
             </label>
             <input
-              value={formData.firstName || currentUser.firstName || ''}
+              value={formData.profile.firstName || ''}
               type="text"
               id="firstName"
               placeholder="First Name"
@@ -159,7 +148,7 @@ const Account = () => {
               Last Name
             </label>
             <input
-              value={formData.lastName || currentUser.lastName || ''}
+              value={formData.lastName || ''}
               type="text"
               id="lastName"
               placeholder="Last Name"
@@ -187,7 +176,7 @@ const Account = () => {
               Phone No#
             </label>
             <input
-              value={formData.mobile || currentUser.mobile || ''}
+              value={formData.mobile || ''}
               type="number"
               id="mobile"
               placeholder="Phone No#"
@@ -201,7 +190,7 @@ const Account = () => {
             Address
           </label>
           <input
-            value={formData.address || currentUser.address || ''}
+            value={formData.address || ''}
             type="address"
             id="address"
             placeholder="Address"
@@ -212,7 +201,7 @@ const Account = () => {
         <div>
           <label className="block text-sm font-medium text-gray-700">Bio</label>
           <textarea
-            value={formData.bio || currentUser.bio || ''}
+            value={formData.bio || ''}
             id="bio"
             placeholder="Write something about yourself..."
             onChange={handleChange}

@@ -14,7 +14,6 @@ const userSlice = createSlice({
     signInStart: (state) => {
       state.loading = true;
     },
-    
     signInSuccess: (state, action) => {
       const { token, user } = action.payload;
       state.currentUser = user;
@@ -30,9 +29,8 @@ const userSlice = createSlice({
       state.loading = true;
     },
     updateUserSuccess: (state, action) => {
-      const { token, user } = action.payload;
+      const { user } = action.payload;
       state.currentUser = user;
-      state.token = token;
       state.loading = false;
       state.error = false;
     },
@@ -44,9 +42,8 @@ const userSlice = createSlice({
       state.loading = true;
     },
     getUserSuccess: (state, action) => {
-      const { token, user } = action.payload;
+      const { user } = action.payload;
       state.currentUser = user;
-      state.token = token;
       state.loading = false;
       state.error = false;
     },
@@ -58,9 +55,9 @@ const userSlice = createSlice({
       state.loading = true;
     },
     getProfileSuccess: (state, action) => {
-      const { token, user } = action.payload;
+      const { user } = action.payload;
+      console.log(user,"profile")
       state.currentUser = user;
-      state.token = token;
       state.loading = false;
       state.error = false;
     },
@@ -72,9 +69,8 @@ const userSlice = createSlice({
       state.loading = true;
     },
     updateProfileSuccess: (state, action) => {
-      const { token, user } = action.payload;
+      const { user } = action.payload;
       state.currentUser = user;
-      state.token = token;
       state.loading = false;
       state.error = false;
     },

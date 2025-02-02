@@ -4,9 +4,9 @@ import logger from '../config/logger.js';
 const updateProfile = async (req, res) => {
     const userId = req.user._id; // Extracting userId from middleware
     const { firstName, lastName, dateOfBirth, phone, address, bio, profilePicture } = req.body;
-    if (!firstName || !lastName) {
-        return res.status(400).json({ message: 'First and last names are required.' });
-    }
+    // if (!firstName || !lastName) {
+    //     return res.status(400).json({ message: 'First and last names are required.' });
+    // }
     try {
         const user = await UserModel.findById(userId).populate('profile');
         if (!user) {
@@ -27,7 +27,7 @@ const updateProfile = async (req, res) => {
         // Save updated profile
         await profile.save();
         logger.info(`Profile updated for user ID ${userId}`);
-        res.status(200).json({ message: 'Profile updated successfully.', profile});
+        res.status(200).json({ message: 'Profile updated successfully.', user: profile });
     } catch (error) {
         logger.error(`Error updating profile for user ID ${userId}: ${error.message}`);
         res.status(500).json({ message: 'Internal server error.', error: error.message });
@@ -78,11 +78,11 @@ const deactivateUser = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found.' });
         }
-        
+
         // Soft delete: Deactivate the user by setting 'active' to false
         user.active = false;
         await user.save();
-        
+
         logger.info(`User with ID ${userId} deactivated successfully.`);
         res.status(200).json({ message: 'User deactivated successfully.' });
     } catch (error) {
@@ -99,11 +99,11 @@ const deactivateUser = async (req, res) => {
 //         if (!user) {
 //             return res.status(404).json({ message: 'User not found.' });
 //         }
-        
+
 //         // Remove the user ID but keep profile info intact
 //         user._id = null; // Reset the user ID
 //         await user.save();
-        
+
 //         logger.info(`User ID for user with ID ${userId} deleted successfully.`);
 //         res.status(200).json({ message: 'User ID deleted, profile info retained.' });
 //     } catch (error) {
@@ -129,7 +129,7 @@ const deactivateUser = async (req, res) => {
 
 //         // Save the user with updated data
 //         await user.save();
-        
+
 //         logger.info(`User profile with ID ${userId} deactivated successfully.`);
 //         res.status(200).json({ message: 'User deactivated and sensitive data removed.' });
 //     } catch (error) {

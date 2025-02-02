@@ -30,7 +30,7 @@ const Profile = () => {
   const dispatch = useDispatch();
 
   const { currentUser, loading, error } = useSelector((state) => state.user);
-
+console.log(currentUser)
   useEffect(() => {
     if (image) handleFileUpload(image);
   }, [image]);

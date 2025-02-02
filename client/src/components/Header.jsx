@@ -1,10 +1,17 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { signOut } from '../redux/user/userSlice';
 
 const Header = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const logout = async () => {
+    dispatch(signOut());
+    navigate('/signin');
+  };
+
   return (
     <header className="bg-gradient-to-b from-pink-100 to-white shadow-md">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center p-4 md:p-6">
@@ -37,17 +44,18 @@ const Header = () => {
             >
               <li>Profile</li>
             </Link>
-            <Link to="/profile">
+            <li >
               {currentUser ? (
                 <img
                   src={currentUser.profilePicture}
                   alt="profile"
                   className="h-7 w-7 rounded-full object-cover"
+                  onClick={() => logout()}
                 />
               ) : (
-                <li onClick={() => navigate('/signin')}>Sign In</li>
+                <li onClick={() => logout()}>Sign In</li>
               )}
-            </Link>
+            </li>
           </ul>
           {/* <button className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 font-medium border border-gray-300 px-4 py-2 rounded-full shadow-sm hover:bg-gray-100 transition-colors duration-200">
             <span>&larr;</span> Login
