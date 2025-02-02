@@ -35,7 +35,7 @@ const Signin = () => {
     try {
       // Start sign-in process
       dispatch(signInStart());
-      const { data } = await apiClient.post('/login', formData);
+      const data = await apiClient.post('/login', formData);
 
       // Debugging logs for the response
       console.log('API Response:', data);
@@ -44,15 +44,12 @@ const Signin = () => {
       if (!data.status) {
         dispatch(signInFailure({ message: data.message || 'Sign-in failed.' }));
         toast.error(data.message || 'Sign-in failed. Please try again.');
-      } else {
-        // Successfully signed in
-        dispatch(signInSuccess(data));
-        toast.success('Successfully signed in!');
-        navigate('/home');
       }
+      // Successfully signed in
+      dispatch(signInSuccess(data));
+      toast.success('Successfully signed in!');
+      navigate('/home');
     } catch (err) {
-      console.log('Error during sign-in:', err); // Debugging log
-
       const errorMessage =
         err.response?.data?.message ||
         'An error occurred. Please try again later.';

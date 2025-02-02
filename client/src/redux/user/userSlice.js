@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   currentUser: null,
   loading: false,
-  error: false,
-  token:'',
+  error: null,  // Changed from false to null
+  token: '',
 };
 
 const userSlice = createSlice({
@@ -15,11 +15,14 @@ const userSlice = createSlice({
       state.loading = true;
     },
     signInSuccess: (state, action) => {
-      const {token, user} = action.payload;
+      const { token, user } = action.payload;
       state.currentUser = user;
       state.token = token;
       state.loading = false;
-      state.error = false;
+      state.error = null;  // Ensure error resets to null
+      
+      // Store token in localStorage
+      localStorage.setItem('token', token);
     },
     signInFailure: (state, action) => {
       state.loading = false;
@@ -32,7 +35,7 @@ const userSlice = createSlice({
       const { user } = action.payload;
       state.currentUser = user;
       state.loading = false;
-      state.error = false;
+      state.error = null;
     },
     updateUserFailure: (state, action) => {
       state.loading = false;
@@ -45,7 +48,7 @@ const userSlice = createSlice({
       const { user } = action.payload;
       state.currentUser = user;
       state.loading = false;
-      state.error = false;
+      state.error = null;
     },
     getUserFailure: (state, action) => {
       state.loading = false;
@@ -56,10 +59,10 @@ const userSlice = createSlice({
     },
     getProfileSuccess: (state, action) => {
       const { user } = action.payload;
-      console.log(user,"profile")
+      console.log(user, "profile");
       state.currentUser = user;
       state.loading = false;
-      state.error = false;
+      state.error = null;
     },
     getProfileFailure: (state, action) => {
       state.loading = false;
@@ -72,7 +75,7 @@ const userSlice = createSlice({
       const { user } = action.payload;
       state.currentUser = user;
       state.loading = false;
-      state.error = false;
+      state.error = null;
     },
     updateProfileFailure: (state, action) => {
       state.loading = false;
@@ -93,8 +96,11 @@ const userSlice = createSlice({
     signOut: (state) => {
       state.currentUser = null;
       state.loading = false;
-      state.error = null; // Fix: Set error to null instead of false
+      state.error = null; 
       state.token = ''; // Clear token on sign out
+      
+      // Remove token from localStorage
+      localStorage.removeItem('token');
     },
   },
 });
