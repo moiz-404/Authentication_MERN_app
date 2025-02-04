@@ -21,24 +21,26 @@ function App() {
 
   return (
     <>
-      {/* Render Header only if the current path is not in noHeaderPaths */}
-      {!noHeaderPaths.includes(location.pathname) && <Header />}
+      <div className="flex min-h-screen w-full">
+        {/* Render Header only if the current path is not in noHeaderPaths */}
+        {!noHeaderPaths.includes(location.pathname) && <Header />}
 
-      {/* Define Routes */}
-      <Routes>
-        <Route path="/" element={<Signin />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/createprofile" element={<CreateProfile />} />
-        <Route path="/home" element={<Home />} />
-        <Route element={<PrivateRoute />}>
-          <Route path="/profile" element={<Profile />} />
-        </Route>
-        <Route path="/resetPasswordOTP" element={<ResetPasswordOTP />} />
-        <Route path="/resetPassword" element={<ResetPassword />} />
+        {/* Define Routes */}
+        <Routes>
+          <Route path="/" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/createprofile" element={<CreateProfile />} />
+          <Route path="/home" element={<Home />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/profile" element={<Profile />} />
+          </Route>
+          <Route path="/resetPasswordOTP" element={<ResetPasswordOTP />} />
+          <Route path="/resetPassword" element={<ResetPassword />} />
 
-        {/* Catch-all for undefined routes */}
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
+          {/* Catch-all for undefined routes */}
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </div>
     </>
   );
 }
