@@ -7,8 +7,8 @@ import morgan from 'morgan'; // Import Morgan
 import logger from './config/logger.js'; // Import the Winston logger
 
 import connectDB from './config/dbconn.js';
-import corsOptions from './config/cors-options.js';
 import errorHandler from './middlewares/error-Handler.middleware.js';
+import corsOptions from './config/cors-options.js';
 import credentials from './middlewares/credentials.middleware.js';
 
 import swaggerJsdoc from 'swagger-jsdoc';
